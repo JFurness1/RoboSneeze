@@ -1,0 +1,97 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfvttc8jficq7"]
+
+[ext_resource type="Script" path="res://GilderBot.gd" id="1_aqfe4"]
+[ext_resource type="Script" path="res://LogBox.gd" id="2_2x7bs"]
+[ext_resource type="Script" path="res://ChatLogBox.gd" id="3_ldjjr"]
+[ext_resource type="Script" path="res://Gift.gd" id="4_e0hx0"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aqfe4")
+
+[node name="AdminRoot" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ClientID" type="HSplitContainer" parent="AdminRoot"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AdminRoot/ClientID"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Client ID"
+horizontal_alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="AdminRoot/ClientID"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ClientSecret" type="HSplitContainer" parent="AdminRoot"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AdminRoot/ClientSecret"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Client Secret"
+horizontal_alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="AdminRoot/ClientSecret"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InitialChannel" type="HSplitContainer" parent="AdminRoot"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AdminRoot/InitialChannel"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Initial Channel"
+horizontal_alignment = 2
+
+[node name="LineEdit" type="LineEdit" parent="AdminRoot/InitialChannel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ConnectButton" type="Button" parent="AdminRoot"]
+layout_mode = 2
+text = "Connect"
+
+[node name="LogDivider" type="HSeparator" parent="AdminRoot"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="AdminRoot"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogBox" type="TextEdit" parent="AdminRoot/TabContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+script = ExtResource("2_2x7bs")
+
+[node name="ChatLogBox" type="TextEdit" parent="AdminRoot/TabContainer"]
+visible = false
+layout_mode = 2
+editable = false
+script = ExtResource("3_ldjjr")
+
+[node name="Gift" type="Node" parent="."]
+script = ExtResource("4_e0hx0")
+
+[connection signal="pressed" from="AdminRoot/ConnectButton" to="Gift" method="_on_connect_button_pressed"]
+[connection signal="chat_message" from="Gift" to="AdminRoot/TabContainer/ChatLogBox" method="_on_gift_chat_message"]
+[connection signal="message_emitted" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_mesage_emitted"]
+[connection signal="twitch_connected" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_gift_twitch_connected"]
+[connection signal="twitch_disconnected" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_gift_twitch_disconnected"]
+[connection signal="twitch_unavailable" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_gift_twitch_unavailable"]
+[connection signal="user_token_invalid" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_gift_user_token_invalid"]
