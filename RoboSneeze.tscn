@@ -23,49 +23,95 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ClientID" type="HSplitContainer" parent="AdminRoot"]
+[node name="LoginGridContainer" type="GridContainer" parent="AdminRoot"]
 layout_mode = 2
+size_flags_horizontal = 4
+columns = 2
 
-[node name="Label" type="Label" parent="AdminRoot/ClientID"]
+[node name="ClientIDLabel" type="Label" parent="AdminRoot/LoginGridContainer"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 text = "Client ID"
 horizontal_alignment = 2
 
-[node name="LineEdit" type="LineEdit" parent="AdminRoot/ClientID"]
+[node name="ClientIDInput" type="LineEdit" parent="AdminRoot/LoginGridContainer"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 
-[node name="ClientSecret" type="HSplitContainer" parent="AdminRoot"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="AdminRoot/ClientSecret"]
+[node name="SecretLabel" type="Label" parent="AdminRoot/LoginGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Client Secret"
 horizontal_alignment = 2
 
-[node name="LineEdit" type="LineEdit" parent="AdminRoot/ClientSecret"]
+[node name="SecretInput" type="LineEdit" parent="AdminRoot/LoginGridContainer"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 secret = true
 
-[node name="InitialChannel" type="HSplitContainer" parent="AdminRoot"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="AdminRoot/InitialChannel"]
+[node name="ChannelLabel" type="Label" parent="AdminRoot/LoginGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Initial Channel"
 horizontal_alignment = 2
 
-[node name="LineEdit" type="LineEdit" parent="AdminRoot/InitialChannel"]
+[node name="ChannelInput" type="LineEdit" parent="AdminRoot/LoginGridContainer"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 
 [node name="ConnectButton" type="Button" parent="AdminRoot"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Connect"
+
+[node name="AdditionsDivider" type="HSeparator" parent="AdminRoot"]
+layout_mode = 2
+
+[node name="NewFeatureGrid" type="GridContainer" parent="AdminRoot"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 3
+
+[node name="NewBidWarName" type="LineEdit" parent="AdminRoot/NewFeatureGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New bid war name"
+expand_to_text_length = true
+
+[node name="AddNewBidWarButton" type="Button" parent="AdminRoot/NewFeatureGrid"]
+layout_mode = 2
+disabled = true
+text = "Add New Bid War"
+
+[node name="LoadBidWarButton" type="Button" parent="AdminRoot/NewFeatureGrid"]
+layout_mode = 2
+disabled = true
+text = "Load Bid War
+"
+
+[node name="NewTugOfWarName" type="LineEdit" parent="AdminRoot/NewFeatureGrid"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New tug of war name"
+editable = false
+expand_to_text_length = true
+
+[node name="AddNewTugOfWarButton" type="Button" parent="AdminRoot/NewFeatureGrid"]
+layout_mode = 2
+disabled = true
+text = "Add New Tug Of War"
+
+[node name="LoadTugOfWarButton" type="Button" parent="AdminRoot/NewFeatureGrid"]
+layout_mode = 2
+disabled = true
+text = "Load Tug Of War"
 
 [node name="LogDivider" type="HSeparator" parent="AdminRoot"]
 layout_mode = 2
@@ -89,7 +135,13 @@ script = ExtResource("3_ldjjr")
 [node name="Gift" type="Node" parent="."]
 script = ExtResource("4_e0hx0")
 
+[connection signal="message_emitted" from="." to="AdminRoot/TabContainer/LogBox" method="_on_mesage_emitted"]
 [connection signal="pressed" from="AdminRoot/ConnectButton" to="Gift" method="_on_connect_button_pressed"]
+[connection signal="text_changed" from="AdminRoot/NewFeatureGrid/NewBidWarName" to="." method="_on_new_bid_war_name_box_text_changed"]
+[connection signal="text_submitted" from="AdminRoot/NewFeatureGrid/NewBidWarName" to="." method="_on_new_bid_war_name_text_submitted"]
+[connection signal="pressed" from="AdminRoot/NewFeatureGrid/AddNewBidWarButton" to="." method="_on_add_new_bid_war_button_pressed"]
+[connection signal="text_changed" from="AdminRoot/NewFeatureGrid/NewTugOfWarName" to="." method="_on_new_tug_of_war_name_box_text_changed"]
+[connection signal="text_submitted" from="AdminRoot/NewFeatureGrid/NewTugOfWarName" to="." method="_on_new_tug_of_war_name_text_submitted"]
 [connection signal="chat_message" from="Gift" to="AdminRoot/TabContainer/ChatLogBox" method="_on_gift_chat_message"]
 [connection signal="message_emitted" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_mesage_emitted"]
 [connection signal="twitch_connected" from="Gift" to="AdminRoot/TabContainer/LogBox" method="_on_gift_twitch_connected"]

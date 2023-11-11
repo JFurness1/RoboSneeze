@@ -2,6 +2,8 @@ extends Gift
 
 var AUTH_FILENAME: String = "./auth.txt"
 
+const component_name: String = "TWITCH"
+
 signal message_emitted(content: String)
 
 func _ready() -> void:
@@ -19,7 +21,7 @@ func _on_connect_button_pressed():
     client_secret = %AdminRoot/ClientSecret/LineEdit.text
     var initial_channel = %AdminRoot/InitialChannel/LineEdit.text
 
-    message_emitted.emit("Attempting to connect to Twitch IRC")
+    message_emitted.emit(component_name, "Attempting to connect to Twitch IRC")
 
     await(authenticate(client_id, client_secret))
     var success = await(connect_to_irc())
@@ -117,27 +119,26 @@ func list(cmd_info : CommandInfo, arg_ary : PackedStringArray) -> void:
     chat(msg)
 
 func save_auth_data(initial_channel: String):
-    message_emitted.emit("Saving auth data to: %s" % AUTH_FILENAME)
-    print("Storing client_id: %s" % client_id)
-    print("Storing client_sectet: %s" % client_secret)
-    print("Storing initial_channel: %s" % initial_channel)
+    message_emitted.emit(component_name, "Saving auth data to: '%s'" % AUTH_FILENAME)
 
     var authfile := FileAccess.open(AUTH_FILENAME, FileAccess.WRITE)
     authfile.store_string("%s\n%s\n%s\n" % [client_id, client_secret, initial_channel])
     authfile.close()
-    print("Auth data saved successfully")
+    message_emitted.emit(component_name, "Auth data saved." % AUTH_FILENAME)
+
 
 func read_saved_auth_data():
     if FileAccess.file_exists(AUTH_FILENAME):
-        message_emitted.emit("Loading auth data from %s" % AUTH_FILENAME)
+        message_emitted.emit(component_name, "Loading auth data from %s" % AUTH_FILENAME)
         var authfile := FileAccess.open(AUTH_FILENAME, FileAccess.READ)
         var client_id = authfile.get_line()
         var client_secret = authfile.get_line()
         var initial_channel = authfile.get_line()
+        print("cid: %s, cs: %s, ic: %s" % [client_id, client_secret, initial_channel])
         # Populate the login boxes
-        %AdminRoot/ClientID/LineEdit.text = client_id
-        %AdminRoot/ClientSecret/LineEdit.text = client_secret
-        %AdminRoot/InitialChannel/LineEdit.text = initial_channel
+        %AdminRoot/LoginGridContainer/ClientIDInput.text = client_id
+        %AdminRoot/LoginGridContainer/SecretInput.text = client_secret
+        %AdminRoot/LoginGridContainer/ChannelInput.text = initial_channel
     else:
-        message_emitted.emit("Auth data file does not exist at %s" % AUTH_FILENAME)
+        message_emitted.emit(component_name, "Auth data file does not exist at %s" % AUTH_FILENAME)
 
