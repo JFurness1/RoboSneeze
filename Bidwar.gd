@@ -70,7 +70,9 @@ func _on_bidwar_team_removal_request(team_name: String, points: int):
 func save_data():
     var outfile = FileAccess.open(self.file_name, FileAccess.WRITE)
     outfile.store_string("%s\n" % self.name)
-    for team in %TeamList.get_children():
+    var teamarray = %TeamList.get_children()
+    teamarray.sort_custom(_order_teams)
+    for team in teamarray:
         outfile.store_string("%s: %d\n" % [team.team_name, team.points])
     outfile.close()
     message_emitted.emit(self.name, "Data saved to '%s'." % self.file_name)
@@ -93,7 +95,13 @@ func load_data(file_name: String) -> bool:
         message_emitted.emit("BidWarLoader", "Cannot  find '%s'." % file_name)
         return false
 
+func _order_teams(a, b) -> bool:
+     return a.points > b.points
 
 func _on_close_button_pressed():
     save_data()
     remove_requested.emit(self)
+
+
+func _on_visualiser_button_pressed():
+    pass # Replace with function body.
