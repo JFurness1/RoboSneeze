@@ -102,6 +102,9 @@ func _on_close_button_pressed():
     save_data()
     remove_requested.emit(self)
 
-
 func _on_visualiser_button_pressed():
-    pass # Replace with function body.
+    var new_window = Window.new()
+    new_window.extend_to_title = true
+    new_window.transient = true
+    new_window.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
+    self.add_child(new_window)

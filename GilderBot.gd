@@ -72,6 +72,7 @@ func _on_load_bid_war_button_pressed():
     file_dialog.set_filters(["*.txt"])
     file_dialog.min_size = FILE_DIALOG_MIN_SIZE
     file_dialog.borderless = false
+    file_dialog.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
     self.add_child(file_dialog)
     file_dialog.visible = true
     file_dialog.file_selected.connect(self._on_load_bid_war_file_selected)
