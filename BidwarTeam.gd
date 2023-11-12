@@ -3,8 +3,9 @@ extends HBoxContainer
 var team_name: String
 var points: int
 
-signal bidwar_team_removal_request(name: String, points: int)
-signal points_changed()
+signal bidwar_team_removal_request(team_name: String, points: int)
+signal points_changed(name: String, new_points: int)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     pass # Replace with function body.
@@ -19,7 +20,7 @@ func set_team_name(name: String):
 func set_points(points: int):
     self.points = points
     $CurrentPoints.value = points
-    points_changed.emit()
+    points_changed.emit(self.team_name, self.points)
 
 func set_details(name: String, points: int):
     self.set_team_name(name)

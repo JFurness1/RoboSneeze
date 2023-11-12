@@ -1,7 +1,5 @@
 tester
-fasdasdsa: 1203
 Third team: 1000
-team b: 400
 final team: 210
 fsdasdsd: 200
 the next team: 7

@@ -6,6 +6,8 @@ const VISUALISER_WINDOW_DIMENSIONS = Vector2i(1200, 200)
 
 signal message_emitted(sender: String, content: String)
 signal remove_requested(to_remove)
+signal points_changed(team: String, new_points: int)
+signal removed_team(team_name: String, points: int)
 
 var file_name: String
 var visuliser_window: Window
@@ -33,7 +35,7 @@ func add_new_team(name: String, start_points: int, update_file: bool = true):
     %TeamList.add_child(new_team)
     new_team.bidwar_team_removal_request.connect(_on_bidwar_team_removal_request)
     new_team.points_changed.connect(save_data)
-    $VisualisationWindow._add_team_to_scroller(name, start_points)
+    $VisualisationWindow._add_team_to_scroller(new_team)
     message_emitted.emit(self.name, "Added team '%s' with points: %d." % [name, start_points])
     if update_file:
         save_data()
@@ -67,6 +69,7 @@ func _on_bidwar_team_removal_request(team_name: String, points: int):
             team.queue_free()
             message_emitted.emit(self.name,
                 "Removed team '%s' (had %d points)" % [self.name, name, points])
+            removed_team.emit(team_name, points)
             found = true
             break
     if not found:

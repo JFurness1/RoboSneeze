@@ -28,12 +28,3 @@ func set_color_bar_size(normalization: int, minimum: float, maximum: float):
 
 func shift_position(shift: Vector2):
     self.position += shift
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-    pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-    pass

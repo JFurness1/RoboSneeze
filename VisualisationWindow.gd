@@ -1,6 +1,6 @@
 extends Window
 
-const BidwarTeam = preload("res://ScrollerText.tscn")
+const ScrollerText = preload("res://ScrollerText.tscn")
 
 const SCROLL_RATE: float = 15 # In pixels per second.
 const SPACING: float = 3
@@ -39,16 +39,25 @@ func update_color_bars():
     for team in self.team_list:
         max_points = max(max_points, team.points)
 
-    for team in team_list:
+    for team in self.team_list:
         team.set_color_bar_size(max_points, COLOR_BAR_MIN, COLOR_BAR_MAX)
 
-func _add_team_to_scroller(team_name: String, points: int):
-    var new_team = BidwarTeam.instantiate()
+func _add_team_to_scroller(team):
+    var new_team = ScrollerText.instantiate()
     var color_hue = float(self.get_children().size() % COLOR_HUE_PARTITIONS)/float(COLOR_HUE_PARTITIONS)
     var color = Color.from_hsv(color_hue, COLOR_SATURATION, COLOR_VALUE)
-    new_team.init(team_name, points, color)
+    new_team.init(team.team_name, team.points, color)
+    team.points_changed.connect(self._on_team_points_change)
     self.add_child(new_team)
     self.reset_scroller_positions()
+
+func _remove_team_from_scroller(team_name: String, points:int):
+    for team in self.get_children():
+        if team.team_name == team_name:
+            self.remove_child(team)
+            team.queue_free()
+            self.reset_scroller_positions()
+            break
 
 func reset_scroller_positions():
     self.team_list = self.get_children()
@@ -68,3 +77,14 @@ func _on_size_changed():
     for team in self.team_list:
         team.size.x = self.size.x
     reset_scroller_positions()
+
+func _on_team_points_change(team_name: String, new_points: int):
+    var done = false
+    for team in self.team_list:
+        if team.team_name == team_name:
+            team.set_points(new_points)
+            self.reset_scroller_positions()
+            done = true
+            break
+    if not done:
+        print("ERROR: Failed to find team '%s' to add points to." % [team_name])
