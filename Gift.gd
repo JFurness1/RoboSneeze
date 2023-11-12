@@ -17,9 +17,9 @@ func _on_connect_button_pressed():
     # When calling this method, a browser will open.
     # Log in to the account that should be used.
 
-    client_id = %AdminRoot/ClientID/LineEdit.text
-    client_secret = %AdminRoot/ClientSecret/LineEdit.text
-    var initial_channel = %AdminRoot/InitialChannel/LineEdit.text
+    client_id = %LoginGridContainer/ClientIDInput.text
+    client_secret = %LoginGridContainer/SecretInput.text
+    var initial_channel = %LoginGridContainer/ChannelInput.text
 
     message_emitted.emit(component_name, "Attempting to connect to Twitch IRC")
 
@@ -33,44 +33,44 @@ func _on_connect_button_pressed():
     # Refer to https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/ for details on
     # what events exist, which API versions are available and which conditions are required.
     # Make sure your token has all required scopes for the event.
-    subscribe_event("channel.follow", 2, {"broadcaster_user_id": user_id, "moderator_user_id": user_id})
-
-    # Adds a command with a specified permission flag.
-    # All implementations must take at least one arg for the command info.
-    # Implementations that recieve args requrires two args,
-    # the second arg will contain all params in a PackedStringArray
-    # This command can only be executed by VIPS/MODS/SUBS/STREAMER
-    add_command("test", command_test, 0, 0, PermissionFlag.NON_REGULAR)
-
-    # These two commands can be executed by everyone
-    add_command("helloworld", hello_world)
-    add_command("greetme", greet_me)
-
-    # This command can only be executed by the streamer
-    add_command("streamer_only", streamer_only, 0, 0, PermissionFlag.STREAMER)
-
-    # Command that requires exactly 1 arg.
-    add_command("greet", greet, 1, 1)
-
-    # Command that prints every arg seperated by a comma (infinite args allowed), at least 2 required
-    add_command("list", list, -1, 2)
-
-    # Adds a command alias
-    add_alias("test","test1")
-    add_alias("test","test2")
-    add_alias("test","test3")
-    # Or do it in a single line
-    # add_aliases("test", ["test1", "test2", "test3"])
-
-    # Remove a single command
-    remove_command("test2")
-
-    # Now only knows commands "test", "test1" and "test3"
-    remove_command("test")
-    # Now only knows commands "test1" and "test3"
-
-    # Remove all commands that call the same function as the specified command
-    purge_command("test1")
+#    subscribe_event("channel.follow", 2, {"broadcaster_user_id": user_id, "moderator_user_id": user_id})
+#
+#    # Adds a command with a specified permission flag.
+#    # All implementations must take at least one arg for the command info.
+#    # Implementations that recieve args requrires two args,
+#    # the second arg will contain all params in a PackedStringArray
+#    # This command can only be executed by VIPS/MODS/SUBS/STREAMER
+#    add_command("test", command_test, 0, 0, PermissionFlag.NON_REGULAR)
+#
+#    # These two commands can be executed by everyone
+#    add_command("helloworld", hello_world)
+#    add_command("greetme", greet_me)
+#
+#    # This command can only be executed by the streamer
+#    add_command("streamer_only", streamer_only, 0, 0, PermissionFlag.STREAMER)
+#
+#    # Command that requires exactly 1 arg.
+#    add_command("greet", greet, 1, 1)
+#
+#    # Command that prints every arg seperated by a comma (infinite args allowed), at least 2 required
+#    add_command("list", list, -1, 2)
+#
+#    # Adds a command alias
+#    add_alias("test","test1")
+#    add_alias("test","test2")
+#    add_alias("test","test3")
+#    # Or do it in a single line
+#    # add_aliases("test", ["test1", "test2", "test3"])
+#
+#    # Remove a single command
+#    remove_command("test2")
+#
+#    # Now only knows commands "test", "test1" and "test3"
+#    remove_command("test")
+#    # Now only knows commands "test1" and "test3"
+#
+#    # Remove all commands that call the same function as the specified command
+#    purge_command("test1")
     # Now no "test" command is known
 
     # Send a chat message to the only connected channel (<channel_name>)
@@ -136,9 +136,9 @@ func read_saved_auth_data():
         var initial_channel = authfile.get_line()
         print("cid: %s, cs: %s, ic: %s" % [client_id, client_secret, initial_channel])
         # Populate the login boxes
-        %AdminRoot/LoginGridContainer/ClientIDInput.text = client_id
-        %AdminRoot/LoginGridContainer/SecretInput.text = client_secret
-        %AdminRoot/LoginGridContainer/ChannelInput.text = initial_channel
+        %LoginGridContainer/ClientIDInput.text = client_id
+        %LoginGridContainer/SecretInput.text = client_secret
+        %LoginGridContainer/ChannelInput.text = initial_channel
     else:
         message_emitted.emit(component_name, "Auth data file does not exist at %s" % AUTH_FILENAME)
 

@@ -1,0 +1,14 @@
+tester
+Team A: -22
+team b: 400
+Third team: 1000
+final team: 210
+the next team: 0
+bargoo: 0
+dasdsda: 0
+fsdasdsd: 200
+fasdasdsa: 1203
+more: 0
+evenmore: 0
+moar: 0
+one: 0

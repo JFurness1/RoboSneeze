@@ -2,80 +2,83 @@
 
 [ext_resource type="Script" path="res://Bidwar.gd" id="1_e4jrm"]
 
-[node name="Control" type="Control"]
-layout_mode = 3
+[node name="Control" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 script = ExtResource("1_e4jrm")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 26.0
-grow_horizontal = 2
-
-[node name="Title" type="Label" parent="VBoxContainer"]
+[node name="TitleContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
+
+[node name="Title" type="Label" parent="TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "NEW BIDWAR NAME
 "
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="CloseButton" type="Button" parent="TitleContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Close"
+
+[node name="HSeparator" type="HSeparator" parent="."]
 layout_mode = 2
 
-[node name="AddNewContainer" type="HSplitContainer" parent="VBoxContainer"]
+[node name="AddNewContainer" type="HSplitContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 2
+size_flags_vertical = 0
 
-[node name="Label" type="Label" parent="VBoxContainer/AddNewContainer"]
+[node name="Label" type="Label" parent="AddNewContainer"]
 layout_mode = 2
 text = "Add new team"
 horizontal_alignment = 2
 
-[node name="HSplitContainer" type="HBoxContainer" parent="VBoxContainer/AddNewContainer"]
+[node name="HSplitContainer" type="HBoxContainer" parent="AddNewContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="NewTeamNameBox" type="LineEdit" parent="VBoxContainer/AddNewContainer/HSplitContainer"]
+[node name="NewTeamNameBox" type="LineEdit" parent="AddNewContainer/HSplitContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 placeholder_text = "Team name"
 
-[node name="NewTeamPointsBox" type="SpinBox" parent="VBoxContainer/AddNewContainer/HSplitContainer"]
+[node name="NewTeamPointsBox" type="SpinBox" parent="AddNewContainer/HSplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-step = 100.0
+rounded = true
 allow_greater = true
 allow_lesser = true
+update_on_text_changed = true
 
-[node name="AddTeamButton" type="Button" parent="VBoxContainer/AddNewContainer/HSplitContainer"]
+[node name="AddTeamButton" type="Button" parent="AddNewContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 disabled = true
 text = "Add"
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="."]
 layout_mode = 2
 
-[node name="VScrollBar" type="ScrollContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 400)
+[node name="TeamListScroller" type="ScrollContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 3
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
 
-[node name="TeamList" type="VBoxContainer" parent="VBoxContainer/VScrollBar"]
+[node name="TeamList" type="VBoxContainer" parent="TeamListScroller"]
 unique_name_in_owner = true
-clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[connection signal="text_changed" from="VBoxContainer/AddNewContainer/HSplitContainer/NewTeamNameBox" to="." method="_on_new_team_name_box_text_changed"]
-[connection signal="pressed" from="VBoxContainer/AddNewContainer/HSplitContainer/AddTeamButton" to="." method="_on_add_team_button_pressed"]
+[connection signal="pressed" from="TitleContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="text_changed" from="AddNewContainer/HSplitContainer/NewTeamNameBox" to="." method="_on_new_team_name_box_text_changed"]
+[connection signal="pressed" from="AddNewContainer/HSplitContainer/AddTeamButton" to="." method="_on_add_team_button_pressed"]
