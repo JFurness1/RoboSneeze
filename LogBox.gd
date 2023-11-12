@@ -12,7 +12,8 @@ func _process(delta):
     pass
 
 func add_message(sender: String, message: String):
-    self.text += "[%s] %s\n" % [sender, message]
+    var time = Time.get_datetime_string_from_system().split("T")[1]
+    self.text += "%s [%s] %s\n" % [time, sender, message]
 
 func _on_mesage_emitted(sender: String, content: String):
     self.add_message(sender, content)

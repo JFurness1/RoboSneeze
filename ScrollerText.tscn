@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy1pfrc6bvpxu"]
+
+[ext_resource type="Script" path="res://ScrollerText.gd" id="1_y3kom"]
+
+[node name="ScrollerText" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_y3kom")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 0.611765, 1, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TeamName" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "TEAM NAME"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Points" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "POINTS
+"

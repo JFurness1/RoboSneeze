@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cn6k8a6nlyek0"]
+[gd_scene load_steps=3 format=3 uid="uid://cn6k8a6nlyek0"]
 
 [ext_resource type="Script" path="res://Bidwar.gd" id="1_e4jrm"]
+[ext_resource type="Script" path="res://VisualisationWindow.gd" id="2_vmil6"]
 
 [node name="Control" type="VBoxContainer"]
 anchors_preset = 15
@@ -84,7 +85,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="VisualisationWindow" type="Window" parent="."]
+disable_3d = true
+initial_position = 2
+size = Vector2i(1200, 200)
+transient = true
+script = ExtResource("2_vmil6")
+
 [connection signal="pressed" from="TitleContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="pressed" from="VisualiserButton" to="." method="_on_visualiser_button_pressed"]
 [connection signal="text_changed" from="AddNewContainer/HSplitContainer/NewTeamNameBox" to="." method="_on_new_team_name_box_text_changed"]
 [connection signal="pressed" from="AddNewContainer/HSplitContainer/AddTeamButton" to="." method="_on_add_team_button_pressed"]
+[connection signal="close_requested" from="VisualisationWindow" to="." method="_on_visualisation_window_close_requested"]

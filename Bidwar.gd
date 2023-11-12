@@ -2,19 +2,24 @@ extends VBoxContainer
 
 const BidwarTeam = preload("res://BidwarTeam.tscn")
 
+const VISUALISER_WINDOW_DIMENSIONS = Vector2i(1200, 200)
+
 signal message_emitted(sender: String, content: String)
 signal remove_requested(to_remove)
 
 var file_name: String
+var visuliser_window: Window
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass
+    $VisualisationWindow.hide()
 
 func set_properties(name: String):
     print("Setting Properties")
     self.name = name
     self.file_name = make_filename(name)
     $TitleContainer/Title.text = "%s" % [self.file_name]
+    $VisualisationWindow.title = self.name
 
 func make_filename(filename: String) -> String:
     var out = filename.replace(" ", "_")
@@ -28,6 +33,7 @@ func add_new_team(name: String, start_points: int, update_file: bool = true):
     %TeamList.add_child(new_team)
     new_team.bidwar_team_removal_request.connect(_on_bidwar_team_removal_request)
     new_team.points_changed.connect(save_data)
+    $VisualisationWindow._add_team_to_scroller(name, start_points)
     message_emitted.emit(self.name, "Added team '%s' with points: %d." % [name, start_points])
     if update_file:
         save_data()
@@ -103,8 +109,7 @@ func _on_close_button_pressed():
     remove_requested.emit(self)
 
 func _on_visualiser_button_pressed():
-    var new_window = Window.new()
-    new_window.extend_to_title = true
-    new_window.transient = true
-    new_window.initial_position = Window.WINDOW_INITIAL_POSITION_CENTER_MAIN_WINDOW_SCREEN
-    self.add_child(new_window)
+    $VisualisationWindow.show()
+
+func _on_visualisation_window_close_requested():
+    $VisualisationWindow.hide()

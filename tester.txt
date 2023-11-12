@@ -4,7 +4,7 @@ Third team: 1000
 team b: 400
 final team: 210
 fsdasdsd: 200
-the next team: 4
+the next team: 7
 bargoo: 0
 dasdsda: 0
 more: 0
