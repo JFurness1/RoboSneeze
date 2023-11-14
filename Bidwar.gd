@@ -112,7 +112,20 @@ func _on_close_button_pressed():
     remove_requested.emit(self)
 
 func _on_visualiser_button_pressed():
+    size_visulaiser_from_inputs()
     $VisualisationWindow.show()
+
+func size_visulaiser_from_inputs():
+    $VisualisationWindow.size = Vector2i(
+        $VisualisationOptions/WindowWidthInput.value,
+        $VisualisationOptions/WindowHeightInput.value
+        )
 
 func _on_visualisation_window_close_requested():
     $VisualisationWindow.hide()
+
+func _on_window_width_input_value_changed(value):
+    $VisualisationWindow.size.x = int(value)
+
+func _on_window_height_input_value_changed(value):
+     $VisualisationWindow.size.y = int(value)
