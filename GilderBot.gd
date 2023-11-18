@@ -71,7 +71,17 @@ func _on_new_bid_war_name_text_submitted(new_text):
             )
 
 func _on_new_tug_of_war_name_text_submitted(new_text):
-    pass # Replace with function body.
+    if validate_name_and_set_button(new_text, $NewFeatureGrid/AddNewTugOfWarButton):
+        _on_add_new_tug_of_war_button_pressed()
+    else:
+        if new_text:
+            message_emitted.emit(
+                component_name,
+                "WARNING: Can't create new Tug of War as name '%s' already exists." % [new_text])
+        else:
+            message_emitted.emit(
+                component_name,
+                "WARNING: Must have a Tug of War name.")
 
 func _on_load_bid_war_button_pressed():
     var file_dialog = FileDialog.new()

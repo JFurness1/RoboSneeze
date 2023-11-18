@@ -17,7 +17,6 @@ func _ready():
     $VisualisationWindow.hide()
 
 func set_properties(name: String):
-    print("Setting Properties")
     self.name = name
     self.file_name = make_filename(name)
     $TitleContainer/Title.text = "%s" % [self.file_name]
@@ -26,7 +25,7 @@ func set_properties(name: String):
 func make_filename(filename: String) -> String:
     var out = filename.replace(" ", "_")
     var path = DirAccess.open("./").get_current_dir()
-    return "%s/%s.txt" % [path, out]
+    return "%s/%s_bw.txt" % [path, out]
 
 func add_new_team(name: String, start_points: int, update_file: bool = true):
     var new_team = BidwarTeam.instantiate()

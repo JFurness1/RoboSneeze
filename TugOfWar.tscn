@@ -80,24 +80,29 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ScrollingContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HSeparator4" type="HSeparator" parent="ScrollContainer/ScrollingContainer"]
+[node name="HSeparator4" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="TeamA" parent="ScrollContainer/ScrollingContainer" instance=ExtResource("1_rqy3e")]
+[node name="TeamA" parent="ScrollContainer/VBoxContainer" instance=ExtResource("1_rqy3e")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HSeparator3" type="HSeparator" parent="ScrollContainer/ScrollingContainer"]
+[node name="HSeparator3" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="TeamB" parent="ScrollContainer/ScrollingContainer" instance=ExtResource("1_rqy3e")]
+[node name="TeamB" parent="ScrollContainer/VBoxContainer" instance=ExtResource("1_rqy3e")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HSeparator5" type="HSeparator" parent="ScrollContainer/ScrollingContainer"]
+[node name="HSeparator5" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
 [connection signal="pressed" from="TitleContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="name_changed" from="ScrollContainer/VBoxContainer/TeamA" to="." method="_on_team_name_changed"]
+[connection signal="points_changed" from="ScrollContainer/VBoxContainer/TeamA" to="." method="_on_team_points_changed"]
+[connection signal="name_changed" from="ScrollContainer/VBoxContainer/TeamB" to="." method="_on_team_name_changed"]
