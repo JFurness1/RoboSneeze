@@ -18,17 +18,15 @@ script = ExtResource("1_aqfe4")
 [node name="Gift" type="Node" parent="."]
 script = ExtResource("4_e0hx0")
 
-[node name="LoginGridContainer" type="GridContainer" parent="."]
+[node name="LoginGridContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-columns = 2
 
 [node name="ClientIDLabel" type="Label" parent="LoginGridContainer"]
-custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-text = "Client ID"
+text = "Client ID:"
 horizontal_alignment = 2
 
 [node name="ClientIDInput" type="LineEdit" parent="LoginGridContainer"]
@@ -40,7 +38,7 @@ secret = true
 [node name="SecretLabel" type="Label" parent="LoginGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Client Secret"
+text = "Client Secret:"
 horizontal_alignment = 2
 
 [node name="SecretInput" type="LineEdit" parent="LoginGridContainer"]
@@ -52,7 +50,7 @@ secret = true
 [node name="ChannelLabel" type="Label" parent="LoginGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Initial Channel"
+text = "Initial Channel:"
 horizontal_alignment = 2
 
 [node name="ChannelInput" type="LineEdit" parent="LoginGridContainer"]
@@ -97,7 +95,6 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "New tug of war name"
-editable = false
 expand_to_text_length = true
 
 [node name="AddNewTugOfWarButton" type="Button" parent="NewFeatureGrid"]
@@ -144,3 +141,4 @@ script = ExtResource("3_ldjjr")
 [connection signal="pressed" from="NewFeatureGrid/LoadBidWarButton" to="." method="_on_load_bid_war_button_pressed"]
 [connection signal="text_changed" from="NewFeatureGrid/NewTugOfWarName" to="." method="_on_new_tug_of_war_name_box_text_changed"]
 [connection signal="text_submitted" from="NewFeatureGrid/NewTugOfWarName" to="." method="_on_new_tug_of_war_name_text_submitted"]
+[connection signal="pressed" from="NewFeatureGrid/AddNewTugOfWarButton" to="." method="_on_add_new_tug_of_war_button_pressed"]

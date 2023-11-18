@@ -2,6 +2,7 @@ extends VBoxContainer
 
 const component_name = "ROOT"
 const Bidwar = preload("res://Bidwar.tscn")
+const TugOfWar = preload("res://TugOfWar.tscn")
 const FILE_DIALOG_MIN_SIZE = Vector2i(400, 400)
 
 var bidwar_load_file_dialogue: FileDialog
@@ -44,6 +45,14 @@ func _on_add_new_bid_war_button_pressed():
     $NewFeatureGrid/NewBidWarName.text = ""
     $NewFeatureGrid/AddNewBidWarButton.disabled = true
 
+func _on_add_new_tug_of_war_button_pressed():
+    # Input should be valid or box would be disabled.
+    var name: String = $NewFeatureGrid/NewTugOfWarName.text
+    var new_tug_of_war = TugOfWar.instantiate()
+    new_tug_of_war.set_properties(name)
+    add_panel(new_tug_of_war)
+    $NewFeatureGrid/NewTugOfWarName.text = ""
+    $NewFeatureGrid/AddNewTugOfWarButton.disabled = true
 
 func _on_new_bid_war_name_text_submitted(new_text):
     # Match submitting to hitting button
@@ -79,13 +88,10 @@ func _on_load_bid_war_button_pressed():
     self.bidwar_load_file_dialogue = file_dialog
 
 func bidwar_path_is_valid(path: String) -> bool:
-    print("VALIDATING: %s" % path)
     for panel in $TabContainer.get_children():
         if panel is TextEdit:
-            print("Panel %s is TextEdit" % panel.name)
             continue
         else:
-            print("Panel filename is: %s" % panel.file_name)
             if panel.file_name == path:
                 return false
     return true
@@ -106,14 +112,17 @@ func _on_load_bid_war_file_selected(path: String):
 func add_panel(new_panel):
     $TabContainer.add_child(new_panel)
     new_panel.message_emitted.connect(%LogBox.add_message)
-    new_panel.remove_requested.connect(self.remove_bidwar)
+    new_panel.remove_requested.connect(self.remove_panel)
     message_emitted.emit(
         component_name,
         "Added new panel: '%s'." % [new_panel.name])
 
-func remove_bidwar(panel):
+func remove_panel(panel):
     $TabContainer.remove_child(panel)
     message_emitted.emit(
         component_name,
         "Removed panel: '%s'." % [panel.name])
     panel.queue_free()
+
+
+

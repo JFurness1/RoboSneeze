@@ -1,0 +1,84 @@
+[gd_scene load_steps=3 format=3 uid="uid://biuk5osvyryv7"]
+
+[ext_resource type="Texture2D" uid="uid://dgy5040r4yym" path="res://Assets/PlaceholderTeam.png" id="1_0big6"]
+[ext_resource type="Script" path="res://TugOfWarTeam.gd" id="1_46wb1"]
+
+[node name="Control" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 200.0
+grow_horizontal = 2
+script = ExtResource("1_46wb1")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer2"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("1_0big6")
+stretch_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Change Picture"
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TeamNameInput" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 20
+text = "TEAM NAME"
+alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="CurrentText" type="Label" parent="."]
+layout_mode = 2
+text = "Current Points:"
+
+[node name="CurrentPoints" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = -100000.0
+max_value = 100000.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="VSeparator2" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="ChangeText" type="Label" parent="."]
+layout_mode = 2
+text = "Change Points:"
+
+[node name="ChangePoints" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = -100000.0
+max_value = 100000.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="ChangeButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Add/Subtract"
+
+[connection signal="text_submitted" from="TeamNameInput" to="." method="_on_team_name_input_text_submitted"]
+[connection signal="value_changed" from="CurrentPoints" to="." method="_on_current_points_value_changed"]
+[connection signal="pressed" from="ChangeButton" to="." method="_on_change_button_pressed"]
