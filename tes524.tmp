@@ -1,0 +1,26 @@
+{
+	"name": "testit",
+	"teams": [
+		{
+			"image": "",
+			"name": "ffororr",
+			"points": 300
+		},
+		{
+			"image": "",
+			"name": "dasdasd",
+			"points": 231
+		},
+		{
+			"image": "C:/Users/sitti/OneDrive/Pictures/Saturn.png",
+			"name": "test",
+			"points": 24
+		},
+		{
+			"image": "",
+			"name": "second",
+			"points": 20
+		}
+	],
+	"type": "BIDWAR"
+}

@@ -78,7 +78,7 @@ func _on_size_changed():
         team.size.x = self.size.x
     reset_scroller_positions()
 
-func _on_team_points_change(team_name: String, new_points: int):
+func _on_team_points_change(team_name: String, old_points: int, new_points: int):
     var done = false
     for team in self.team_list:
         if team.team_name == team_name:

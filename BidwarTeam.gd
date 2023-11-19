@@ -2,6 +2,7 @@ extends HBoxContainer
 
 var team_name: String = "PLACEHOLDER"
 var points: int = 0
+var image_path: String = ""
 
 signal name_changed(old_name: String, new_name: String)
 signal points_changed(name: String, old_points: int, new_points: int)
@@ -12,7 +13,6 @@ func _ready():
     pass # Replace with function body.
 
 func _on_delete_button_pressed():
-    print("REMOVE REQUESTED")
     bidwar_team_removal_request.emit(self.name, self.points)
 
 func set_details(name: String, points: int):
@@ -47,3 +47,34 @@ func _on_current_points_value_changed(value):
 
 func _on_team_name_input_text_submitted(new_text):
     self.set_team_name(new_text)
+
+
+func _on_set_image_button_pressed():
+    $ImageSelectDialog.visible = true
+
+
+func _on_image_select_dialog_close_requested():
+    $ImageSelectDialog.visible = false
+
+
+func _on_image_select_dialog_file_selected(path):
+    if not FileAccess.file_exists(path):
+        self.image_path = ""
+    else:
+        var new_image = Image.load_from_file(path)
+        var texture = ImageTexture.create_from_image(new_image)
+        $TextureRect.texture = texture
+        self.image_path = path
+
+func get_data() -> Dictionary:
+    return {
+        "name": self.team_name,
+        "points": self.points,
+        "image": self.image_path
+    }
+
+func set_from_data(data: Dictionary):
+    self.set_team_name(data['name'])
+    self.set_points(int(data['points']))
+    if data['image']:
+        self._on_image_select_dialog_file_selected(data['image'])
