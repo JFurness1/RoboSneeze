@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const BidwarTeam = preload("res://TugOfWarTeam.tscn")
+const BidwarTeam = preload("res://BidwarTeam.tscn")
 
 const VISUALISER_WINDOW_DIMENSIONS = Vector2i(1200, 200)
 

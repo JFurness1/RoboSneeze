@@ -1,25 +1,52 @@
-[gd_scene load_steps=2 format=3 uid="uid://ca5ugu6r0l87m"]
+[gd_scene load_steps=3 format=3 uid="uid://cis28cmyinsf5"]
 
 [ext_resource type="Script" path="res://BidwarTeam.gd" id="1_qw0ex"]
+[ext_resource type="Texture2D" uid="uid://dgy5040r4yym" path="res://Assets/PlaceholderTeam.png" id="2_g5h1n"]
 
 [node name="Control" type="HBoxContainer"]
 anchors_preset = 10
 anchor_right = 1.0
+offset_bottom = 50.0
 grow_horizontal = 2
-size_flags_horizontal = 3
+size_flags_vertical = 4
 script = ExtResource("1_qw0ex")
 
-[node name="TeamName" type="Label" parent="."]
+[node name="ImageVBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="ImageVBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g5h1n")
+expand_mode = 3
+
+[node name="Button" type="Button" parent="ImageVBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Set
+"
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="TeamNameInput" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 20
 text = "TEAM NAME"
-horizontal_alignment = 1
+alignment = 1
 
 [node name="DeleteButton" type="Button" parent="."]
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
 text = "X"
 
-[node name="VSeparator" type="VSeparator" parent="."]
+[node name="VSeparator3" type="VSeparator" parent="."]
 layout_mode = 2
 
 [node name="CurrentText" type="Label" parent="."]
@@ -27,8 +54,9 @@ layout_mode = 2
 text = "Current Points:"
 
 [node name="CurrentPoints" type="SpinBox" parent="."]
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_vertical = 4
 min_value = -100000.0
 max_value = 100000.0
 rounded = true
@@ -45,6 +73,7 @@ text = "Change Points:"
 [node name="ChangePoints" type="SpinBox" parent="."]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_vertical = 4
 min_value = -100000.0
 max_value = 100000.0
 rounded = true
@@ -53,8 +82,10 @@ allow_lesser = true
 
 [node name="ChangeButton" type="Button" parent="."]
 layout_mode = 2
-text = "Add/Subtract"
+size_flags_vertical = 4
+text = "Add"
 
+[connection signal="text_submitted" from="TeamNameInput" to="." method="_on_team_name_input_text_submitted"]
 [connection signal="pressed" from="DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="value_changed" from="CurrentPoints" to="." method="_on_current_points_value_changed"]
 [connection signal="pressed" from="ChangeButton" to="." method="_on_change_button_pressed"]
