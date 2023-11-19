@@ -15,7 +15,7 @@ func add_message(sender: String, message: String):
     var time = Time.get_datetime_string_from_system().split("T")[1]
     self.text += "%s [%s] %s\n" % [time, sender, message]
 
-func _on_mesage_emitted(sender: String, content: String):
+func _on_message_emitted(sender: String, content: String):
     self.add_message(sender, content)
 
 func _on_gift_twitch_connected():
@@ -29,3 +29,4 @@ func _on_gift_twitch_disconnected():
 
 func _on_gift_twitch_unavailable():
     self.add_message(root_name, "Twitch IRC is unavailable.")
+

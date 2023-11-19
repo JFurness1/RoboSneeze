@@ -5,11 +5,15 @@ var points: int = 0
 
 signal name_changed(old_name: String, new_name: String)
 signal points_changed(name: String, old_points: int, new_points: int)
+signal bidwar_team_removal_request(team_name: String, points: int)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
     pass # Replace with function body.
 
+func _on_delete_button_pressed():
+    print("REMOVE REQUESTED")
+    bidwar_team_removal_request.emit(self.name, self.points)
 
 func set_details(name: String, points: int):
     self.set_team_name(name)

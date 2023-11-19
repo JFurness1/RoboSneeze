@@ -1,8 +1,10 @@
 extends VBoxContainer
 
-const BidwarTeam = preload("res://BidwarTeam.tscn")
+const BidwarTeam = preload("res://TugOfWarTeam.tscn")
 
 const VISUALISER_WINDOW_DIMENSIONS = Vector2i(1200, 200)
+
+const panel_style: String = "BIDWAR"
 
 signal message_emitted(sender: String, content: String)
 signal remove_requested(to_remove)
@@ -10,22 +12,20 @@ signal points_changed(team: String, new_points: int)
 signal removed_team(team_name: String, points: int)
 
 var file_name: String
+var text_file_name: String
 var visuliser_window: Window
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
     $VisualisationWindow.hide()
 
-func set_properties(name: String):
+func set_properties(name: String, filename: String):
     self.name = name
-    self.file_name = make_filename(name)
+    self.file_name = filename
+    self.text_file_name = self.file_name.replace(".json", ".txt")
     $TitleContainer/Title.text = "%s" % [self.file_name]
     $VisualisationWindow.title = self.name
 
-func make_filename(filename: String) -> String:
-    var out = filename.replace(" ", "_")
-    var path = DirAccess.open("./").get_current_dir()
-    return "%s/%s_bw.txt" % [path, out]
 
 func add_new_team(name: String, start_points: int, update_file: bool = true):
     var new_team = BidwarTeam.instantiate()
@@ -76,32 +76,37 @@ func _on_bidwar_team_removal_request(team_name: String, points: int):
                 "WARNING: Failed to find team '%s' for removal." % [name])
 
 func save_data():
-    var outfile = FileAccess.open(self.file_name, FileAccess.WRITE)
-    outfile.store_string("%s\n" % self.name)
-    var teamarray = %TeamList.get_children()
-    teamarray.sort_custom(_order_teams)
-    for team in teamarray:
-        outfile.store_string("%s: %d\n" % [team.team_name, team.points])
-    outfile.close()
-    message_emitted.emit(self.name, "Data saved to '%s'." % self.file_name)
+    var outfile = FileAccess.open(self.text_file_name, FileAccess.WRITE)
+    var teamnodes = %TeamList.get_children()
+    teamnodes.sort_custom(_order_teams)
+    var teams: Array = []
+    for team in teamnodes:
+        teams.append([team.team_name, team.points])
 
-func load_data(file_name: String) -> bool:
-    message_emitted.emit("BidWarLoader", "Attempting to load '%s'." % file_name)
-    if FileAccess.file_exists(file_name):
-        self.file_name = file_name
-        var infile = FileAccess.open(file_name, FileAccess.READ)
-        var name = infile.get_line()
-        self.set_properties(name)
-        var line = infile.get_line()
-        while line:
-            var bits = line.split(': ', false)
-            # Add a new team but don't update the file
-            self.add_new_team(bits[0], int(bits[1]), false)
-            line = infile.get_line()
-        return true
+    if outfile:
+        outfile.store_string("%s\n" % self.name)
+        for team in teams:
+            outfile.store_string("%s: %d\n" % team)
+        message_emitted.emit(self.name, "Scores saved to '%s'." % self.text_file_name)
     else:
-        message_emitted.emit("BidWarLoader", "Cannot  find '%s'." % file_name)
-        return false
+        message_emitted.emit(self.name, "Failed to open file '%s' for writing." % self.text_file_name)
+    outfile.close()
+
+    var datfile = FileAccess.open(self.file_name, FileAccess.WRITE)
+    if datfile:
+        var outdict = {
+            'name': self.name,
+            'type': self.panel_style,
+            'teams': teams
+            }
+        datfile.store_string(JSON.stringify(outdict))
+    else:
+        message_emitted.emit(self.name, "Failed to open file '%s' for writing." % self.file_name)
+
+func set_from_data(data: Dictionary, file_name: String):
+    self.set_properties(data['name'], file_name)
+    for team in data['teams']:
+        self.add_new_team(team[0], int(team[1]), false)
 
 func _order_teams(a, b) -> bool:
      return a.points > b.points

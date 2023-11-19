@@ -1,5 +1,5 @@
 tester
-Third team: 1000
+Third team: 1060
 final team: 210
 fsdasdsd: 200
 the next team: 7

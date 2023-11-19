@@ -11,15 +11,11 @@ func _ready():
 
 func set_properties(name: String):
     self.name = name
-    self.file_name = make_filename(name)
+    self.file_name = Globals.make_filename(name)
     $TitleContainer/Title.text = "%s" % [self.file_name]
 #    $VisualisationWindow.title = self.name
     self.save_data()
 
-func make_filename(filename: String) -> String:
-    var out = filename.replace(" ", "_")
-    var path = DirAccess.open("./").get_current_dir()
-    return "%s/%s_tow.txt" % [path, out]
 
 func _on_close_button_pressed():
     self.save_data()

@@ -68,44 +68,26 @@ text = "Connect"
 [node name="AdditionsDivider" type="HSeparator" parent="."]
 layout_mode = 2
 
-[node name="NewFeatureGrid" type="GridContainer" parent="."]
+[node name="NewEventHBox" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 4
-columns = 3
 
-[node name="NewBidWarName" type="LineEdit" parent="NewFeatureGrid"]
+[node name="NewEventName" type="LineEdit" parent="NewEventHBox"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "New bid war name"
+placeholder_text = "New event name"
 expand_to_text_length = true
 
-[node name="AddNewBidWarButton" type="Button" parent="NewFeatureGrid"]
+[node name="AddNewEventButton" type="Button" parent="NewEventHBox"]
 layout_mode = 2
 disabled = true
-text = "Add New Bid War"
+text = "Add New Event"
 
-[node name="LoadBidWarButton" type="Button" parent="NewFeatureGrid"]
+[node name="LoadEventButton" type="Button" parent="NewEventHBox"]
 layout_mode = 2
-text = "Load Bid War
+text = "Load Event
 "
-
-[node name="NewTugOfWarName" type="LineEdit" parent="NewFeatureGrid"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "New tug of war name"
-expand_to_text_length = true
-
-[node name="AddNewTugOfWarButton" type="Button" parent="NewFeatureGrid"]
-layout_mode = 2
-disabled = true
-text = "Add New Tug Of War"
-
-[node name="LoadTugOfWarButton" type="Button" parent="NewFeatureGrid"]
-layout_mode = 2
-disabled = true
-text = "Load Tug Of War"
 
 [node name="LogDivider" type="HSeparator" parent="."]
 layout_mode = 2
@@ -127,7 +109,7 @@ layout_mode = 2
 editable = false
 script = ExtResource("3_ldjjr")
 
-[connection signal="message_emitted" from="." to="TabContainer/LogBox" method="_on_mesage_emitted"]
+[connection signal="message_emitted" from="." to="TabContainer/LogBox" method="_on_message_emitted"]
 [connection signal="chat_message" from="Gift" to="TabContainer/ChatLogBox" method="_on_gift_chat_message"]
 [connection signal="message_emitted" from="Gift" to="TabContainer/LogBox" method="_on_mesage_emitted"]
 [connection signal="twitch_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_connected"]
@@ -135,10 +117,7 @@ script = ExtResource("3_ldjjr")
 [connection signal="twitch_unavailable" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_unavailable"]
 [connection signal="user_token_invalid" from="Gift" to="TabContainer/LogBox" method="_on_gift_user_token_invalid"]
 [connection signal="pressed" from="ConnectButton" to="Gift" method="_on_connect_button_pressed"]
-[connection signal="text_changed" from="NewFeatureGrid/NewBidWarName" to="." method="_on_new_bid_war_name_box_text_changed"]
-[connection signal="text_submitted" from="NewFeatureGrid/NewBidWarName" to="." method="_on_new_bid_war_name_text_submitted"]
-[connection signal="pressed" from="NewFeatureGrid/AddNewBidWarButton" to="." method="_on_add_new_bid_war_button_pressed"]
-[connection signal="pressed" from="NewFeatureGrid/LoadBidWarButton" to="." method="_on_load_bid_war_button_pressed"]
-[connection signal="text_changed" from="NewFeatureGrid/NewTugOfWarName" to="." method="_on_new_tug_of_war_name_box_text_changed"]
-[connection signal="text_submitted" from="NewFeatureGrid/NewTugOfWarName" to="." method="_on_new_tug_of_war_name_text_submitted"]
-[connection signal="pressed" from="NewFeatureGrid/AddNewTugOfWarButton" to="." method="_on_add_new_tug_of_war_button_pressed"]
+[connection signal="text_changed" from="NewEventHBox/NewEventName" to="." method="_on_new_event_name_text_changed"]
+[connection signal="text_submitted" from="NewEventHBox/NewEventName" to="." method="_on_new_event_name_text_submitted"]
+[connection signal="pressed" from="NewEventHBox/AddNewEventButton" to="." method="_on_add_new_event_button_pressed"]
+[connection signal="pressed" from="NewEventHBox/LoadEventButton" to="." method="_on_load_event_button_pressed"]
