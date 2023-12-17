@@ -1,0 +1,141 @@
+[gd_scene load_steps=16 format=3 uid="uid://w608hb0bp82a"]
+
+[ext_resource type="Script" path="res://DuelingBeams/BeamTeam.gd" id="1_4neod"]
+[ext_resource type="Texture2D" uid="uid://b8yid04yi45gq" path="res://Assets/DuelingBeams/Snowflake.png" id="2_dln0w"]
+[ext_resource type="Texture2D" uid="uid://3mtrjj473w21" path="res://Assets/DuelingBeams/energyArc.svg" id="2_ppw6e"]
+[ext_resource type="Texture2D" uid="uid://kri6oprgydaa" path="res://Assets/DuelingBeams/meetingPoint_no_edge.svg" id="3_02bgy"]
+
+[sub_resource type="Curve" id="Curve_pnej8"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.414216, 0.271028), 0.0, 0.0, 0, 0, Vector2(0.620098, 0.412297), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Gradient" id="Gradient_3jk0b"]
+offsets = PackedFloat32Array(0.0210526, 0.239474, 0.563158, 0.826316, 1)
+colors = PackedColorArray(1, 1, 1, 0.172549, 0.951342, 0.951342, 0.951342, 0.742928, 0.929412, 0.929412, 0.929412, 1, 0.952799, 0.952799, 0.952799, 0.668675, 1, 1, 1, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1c4y"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(0, 0, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpeln"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(36, 0, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qnsyv"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(72, 0, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5p7s3"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(108, 0, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_crpgs"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(0, 62, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4s2kg"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(36, 62, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_amktp"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(72, 62, 36, 62)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgshd"]
+atlas = ExtResource("3_02bgy")
+region = Rect2(108, 62, 36, 62)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_le27v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1c4y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpeln")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qnsyv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5p7s3")
+}],
+"loop": true,
+"name": &"blue",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_crpgs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4s2kg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_amktp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgshd")
+}],
+"loop": true,
+"name": &"red",
+"speed": 15.0
+}]
+
+[node name="TeamA" type="Node2D"]
+script = ExtResource("1_4neod")
+
+[node name="TeamSprite" type="Sprite2D" parent="."]
+
+[node name="EnergyArc" type="Sprite2D" parent="."]
+texture = ExtResource("2_ppw6e")
+
+[node name="EnergyBeam" type="Line2D" parent="EnergyArc"]
+unique_name_in_owner = true
+show_behind_parent = true
+width = 30.0
+antialiased = true
+
+[node name="MeetingParticles" type="CPUParticles2D" parent="EnergyArc"]
+z_index = 1
+lifetime = 0.66
+lifetime_randomness = 0.6
+texture = ExtResource("2_dln0w")
+emission_shape = 5
+emission_points = PackedVector2Array(0, -5, 0, 0, 0, 5)
+emission_normals = PackedVector2Array(0.707, -0.707, 1, 0, 0.707, 0.707)
+emission_colors = PackedColorArray()
+spread = 25.0
+gravity = Vector2(0, 30)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+angular_velocity_min = -438.24
+angular_velocity_max = 341.93
+angle_min = -336.4
+angle_max = 363.4
+scale_amount_curve = SubResource("Curve_pnej8")
+color_ramp = SubResource("Gradient_3jk0b")
+
+[node name="CollisionSprite" type="AnimatedSprite2D" parent="EnergyArc"]
+modulate = Color(1, 1, 1, 0.729412)
+sprite_frames = SubResource("SpriteFrames_le27v")
+animation = &"blue"
+centered = false
+offset = Vector2(-2, 0)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = -13.0
+offset_right = 42.5
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "Team Doot"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true

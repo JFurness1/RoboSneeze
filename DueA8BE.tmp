@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://d18dudvuev1dm"]
+
+[ext_resource type="Script" path="res://DuelingBeams.gd" id="1_3d1d0"]
+[ext_resource type="Texture2D" uid="uid://bdlpanllv5a20" path="res://Assets/DuelingBeams/Grass.svg" id="1_k51pf"]
+[ext_resource type="PackedScene" uid="uid://w608hb0bp82a" path="res://DuelingBeams/BeamTeam.tscn" id="3_tim1n"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_3d1d0")
+
+[node name="SkyPolygon" type="Polygon2D" parent="."]
+color = Color(0.376471, 0.705882, 1, 1)
+polygon = PackedVector2Array(-1000, -1000, 1000, -1000, 1000, 1000, -1000, 1000)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="BackgroundGrass" type="Sprite2D" parent="."]
+texture = ExtResource("1_k51pf")
+offset = Vector2(0, 30)
+
+[node name="TeamA" parent="." instance=ExtResource("3_tim1n")]
+
+[node name="TeamB" parent="." instance=ExtResource("3_tim1n")]
