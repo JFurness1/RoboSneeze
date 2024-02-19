@@ -33,8 +33,11 @@ func _on_connect_button_pressed():
     # Refer to https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/ for details on
     # what events exist, which API versions are available and which conditions are required.
     # Make sure your token has all required scopes for the event.
-#    subscribe_event("channel.follow", 2, {"broadcaster_user_id": user_id, "moderator_user_id": user_id})
-#
+
+    # We want to connect to the cheer event.
+    # First get the streamer's details.
+    var streamer = await(user_data_by_name(initial_channel))
+    subscribe_event("channel.cheer", 1, {"broadcaster_user_id": streamer['id']})
 #    # Adds a command with a specified permission flag.
 #    # All implementations must take at least one arg for the command info.
 #    # Implementations that recieve args requrires two args,
@@ -87,6 +90,8 @@ func on_event(type : String, data : Dictionary) -> void:
     match(type):
         "channel.follow":
             print("%s followed your channel!" % data["user_name"])
+        "channel.cheer":
+            print("%s just cheered!" % data["user_name"])
 
 func on_chat(data : SenderData, msg : String) -> void:
     pass

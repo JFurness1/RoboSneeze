@@ -30,3 +30,8 @@ func _on_gift_twitch_disconnected():
 func _on_gift_twitch_unavailable():
     self.add_message(root_name, "Twitch IRC is unavailable.")
 
+func _on_gift_events_connected():
+    self.add_message(root_name, "Connected to Twitch Events.")
+
+func _on_gift_events_disconnected():
+    self.add_message(root_name, "Disconnected from Twitch Events.")

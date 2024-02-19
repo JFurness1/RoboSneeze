@@ -33,7 +33,6 @@ horizontal_alignment = 2
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 2
-secret = true
 
 [node name="SecretLabel" type="Label" parent="LoginGridContainer"]
 layout_mode = 2
@@ -45,7 +44,6 @@ horizontal_alignment = 2
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 2
-secret = true
 
 [node name="ChannelLabel" type="Label" parent="LoginGridContainer"]
 layout_mode = 2
@@ -57,7 +55,6 @@ horizontal_alignment = 2
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 2
-secret = true
 
 [node name="ConnectButton" type="Button" parent="."]
 custom_minimum_size = Vector2(150, 0)
@@ -111,8 +108,12 @@ script = ExtResource("3_ldjjr")
 
 [connection signal="message_emitted" from="." to="TabContainer/LogBox" method="_on_message_emitted"]
 [connection signal="chat_message" from="Gift" to="TabContainer/ChatLogBox" method="_on_gift_chat_message"]
+[connection signal="events_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_connected"]
+[connection signal="events_disconnected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_disconnected"]
 [connection signal="message_emitted" from="Gift" to="TabContainer/LogBox" method="_on_mesage_emitted"]
+[connection signal="twitch_connected" from="Gift" to="." method="_on_gift_twitch_connected"]
 [connection signal="twitch_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_connected"]
+[connection signal="twitch_disconnected" from="Gift" to="." method="_on_gift_twitch_disconnected"]
 [connection signal="twitch_disconnected" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_disconnected"]
 [connection signal="twitch_unavailable" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_unavailable"]
 [connection signal="user_token_invalid" from="Gift" to="TabContainer/LogBox" method="_on_gift_user_token_invalid"]

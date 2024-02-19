@@ -58,7 +58,7 @@ signal event(type, data)
 @export var chat_timeout_ms : int = 320
 
 ## Scopes to request for the token. Look at https://dev.twitch.tv/docs/authentication/scopes/ for a list of all available scopes.
-@export var scopes : Array[String] = ["chat:edit", "chat:read"]
+@export var scopes : Array[String] = ["chat:edit", "chat:read", "bits:read"]
 
 @export_category("Emotes/Badges")
 
@@ -160,6 +160,7 @@ func authenticate(client_id, client_secret) -> void:
                         get_token()
                         token = await(user_token_received)
     else:
+        print("GETTING TOKEN")
         get_token()
         token = await(user_token_received)
     username = await(is_token_valid(token["access_token"]))

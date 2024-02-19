@@ -117,3 +117,8 @@ func remove_panel(panel):
         "Removed panel: '%s'." % [panel.name])
     panel.queue_free()
 
+func _on_gift_twitch_connected():
+    $ConnectButton.disabled = true
+
+func _on_gift_twitch_disconnected():
+    $ConnectButton.disabled = false
