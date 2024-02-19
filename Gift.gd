@@ -4,7 +4,7 @@ var AUTH_FILENAME: String = "./auth.txt"
 
 const component_name: String = "TWITCH"
 
-signal message_emitted(content: String)
+signal message_emitted(sender: String, content: String)
 
 func _ready() -> void:
     cmd_no_permission.connect(no_permission)
@@ -37,7 +37,12 @@ func _on_connect_button_pressed():
     # We want to connect to the cheer event.
     # First get the streamer's details.
     var streamer = await(user_data_by_name(initial_channel))
-    subscribe_event("channel.cheer", 1, {"broadcaster_user_id": streamer['id']})
+    if streamer.has('id'):
+        subscribe_event("channel.cheer", 1, {"broadcaster_user_id": streamer['id']})
+        message_emitted.emit(component_name, "Successfully fetched streamer information for \"%s\"." % [streamer['display_name']])
+    else:
+        message_emitted.emit(component_name, "Failed to fetch streamer information for %s." % initial_channel)
+
 #    # Adds a command with a specified permission flag.
 #    # All implementations must take at least one arg for the command info.
 #    # Implementations that recieve args requrires two args,

@@ -49,6 +49,9 @@ signal events_revoked(event, reason)
 # Refer to https://dev.twitch.tv/docs/eventsub/eventsub-reference/ data contained in the data dictionary.
 signal event(type, data)
 
+@export_category("Twitch")
+@export var twitch_address : String = "https://api.twitch.tv/helix"
+
 @export_category("IRC")
 
 ## Messages starting with one of these symbols are handled as commands. '/' will be ignored, reserved by Twitch.
@@ -405,7 +408,7 @@ func subscribe_event(event_name : String, version : int, conditions : Dictionary
     }
     var request : HTTPRequest = HTTPRequest.new()
     add_child(request)
-    request.request("https://api.twitch.tv/helix/eventsub/subscriptions", [USER_AGENT, "Authorization: Bearer " + token["access_token"], "Client-Id:" + client_id, "Content-Type: application/json"], HTTPClient.METHOD_POST, JSON.stringify(data))
+    request.request(twitch_address + "/eventsub/subscriptions", [USER_AGENT, "Authorization: Bearer " + token["access_token"], "Client-Id:" + client_id, "Content-Type: application/json"], HTTPClient.METHOD_POST, JSON.stringify(data))
     var reply : Array = await(request.request_completed)
     request.queue_free()
     var response : Dictionary = JSON.parse_string(reply[3].get_string_from_utf8())
@@ -455,7 +458,7 @@ func whisper(message : String, target : String) -> Dictionary:
 func whisper_by_uid(message : String, target_id : String) -> int:
     var request : HTTPRequest = HTTPRequest.new()
     add_child(request)
-    request.request("https://api.twitch.tv/helix/whispers", [USER_AGENT, "Authorization: Bearer " + token["access_token"], "Client-Id:" + client_id, "Content-Type: application/json"], HTTPClient.METHOD_POST, JSON.stringify({"from_user_id": user_id, "to_user_id": target_id, "message": message}))
+    request.request(twitch_address + "/whispers", [USER_AGENT, "Authorization: Bearer " + token["access_token"], "Client-Id:" + client_id, "Content-Type: application/json"], HTTPClient.METHOD_POST, JSON.stringify({"from_user_id": user_id, "to_user_id": target_id, "message": message}))
     var reply : Array = await(request.request_completed)
     request.queue_free()
     if (reply[1] != HTTPClient.RESPONSE_NO_CONTENT):
@@ -466,7 +469,7 @@ func whisper_by_uid(message : String, target_id : String) -> int:
 func user_data_by_name(username : String) -> Dictionary:
     var request : HTTPRequest = HTTPRequest.new()
     add_child(request)
-    request.request("https://api.twitch.tv/helix/users?login=" + username, [USER_AGENT, "Authorization: Bearer " + token["access_token"], "Client-Id:" + client_id, "Content-Type: application/json"], HTTPClient.METHOD_GET)
+    request.request(twitch_address + "/users?login=" + username, [USER_AGENT, "Authorization: Bearer " + token["access_token"], "Client-Id:" + client_id, "Content-Type: application/json"], HTTPClient.METHOD_GET)
     var reply : Array = await(request.request_completed)
     var response : Dictionary = JSON.parse_string(reply[3].get_string_from_utf8())
     request.queue_free()

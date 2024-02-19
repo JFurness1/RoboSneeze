@@ -3,15 +3,22 @@ extends VBoxContainer
 const component_name = "ROOT"
 const Bidwar = preload("res://Bidwar.tscn")
 
+
 const FILE_DIALOG_MIN_SIZE = Vector2i(400, 400)
 
 var event_load_file_dialogue: FileDialog
+var cheer_regex = RegEx.new()
+var cheer_count_regex = RegEx.new()
+var cheer_team_regex = RegEx.new()
 
 signal message_emitted(sender: String, message: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass
+    $Gift.message_emitted.connect(%LogBox._on_message_emitted)
+    cheer_regex.compile("\\s*Cheer\\d\\d*")
+    cheer_count_regex.compile("\\d*$")
+    cheer_team_regex.compile("#\\w*")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -122,3 +129,31 @@ func _on_gift_twitch_connected():
 
 func _on_gift_twitch_disconnected():
     $ConnectButton.disabled = false
+
+func _on_gift_chat_message(sender_data: SenderData, message: String):
+    var contains = parse_chat_message(sender_data, message)
+
+    if contains['has_cheers']:
+        if len(contains['team_names']) > 0:
+            message_emitted.emit(component_name, "%s cheered %d for teams: %s" % [sender_data['user'], contains['cheer_count'], contains['team_names']])
+        else:
+            message_emitted.emit(component_name, "%s cheered %d but no team provided." % [sender_data['user'], contains['cheer_count']])
+
+func parse_chat_message(sender_data: SenderData, message: String) -> Dictionary:
+    var components = Dictionary()
+    var cheers = cheer_regex.search_all(message)
+
+    components['has_cheers'] = len(cheers) > 0
+
+    components['cheer_count'] = 0
+    for part in cheers:
+        var count = cheer_count_regex.search(part.get_string()).get_string()
+        components['cheer_count'] += int(count)
+
+    var teams = cheer_team_regex.search_all(message)
+
+    components['team_names'] = []
+    for t in teams:
+        components['team_names'].append(t.get_string())
+
+    return components

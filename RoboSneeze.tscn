@@ -17,6 +17,7 @@ script = ExtResource("1_aqfe4")
 
 [node name="Gift" type="Node" parent="."]
 script = ExtResource("4_e0hx0")
+scopes = Array[String](["chat:edit", "chat:read"])
 
 [node name="LoginGridContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -107,10 +108,11 @@ editable = false
 script = ExtResource("3_ldjjr")
 
 [connection signal="message_emitted" from="." to="TabContainer/LogBox" method="_on_message_emitted"]
+[connection signal="chat_message" from="Gift" to="." method="_on_gift_chat_message"]
 [connection signal="chat_message" from="Gift" to="TabContainer/ChatLogBox" method="_on_gift_chat_message"]
 [connection signal="events_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_connected"]
 [connection signal="events_disconnected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_disconnected"]
-[connection signal="message_emitted" from="Gift" to="TabContainer/LogBox" method="_on_mesage_emitted"]
+[connection signal="message_emitted" from="Gift" to="TabContainer/LogBox" method="_on_gift_message_emitted"]
 [connection signal="twitch_connected" from="Gift" to="." method="_on_gift_twitch_connected"]
 [connection signal="twitch_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_connected"]
 [connection signal="twitch_disconnected" from="Gift" to="." method="_on_gift_twitch_disconnected"]

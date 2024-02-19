@@ -35,3 +35,7 @@ func _on_gift_events_connected():
 
 func _on_gift_events_disconnected():
     self.add_message(root_name, "Disconnected from Twitch Events.")
+
+
+func _on_gift_message_emitted(sender, content):
+    pass # Replace with function body.
