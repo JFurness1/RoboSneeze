@@ -138,6 +138,7 @@ func _on_gift_chat_message(sender_data: SenderData, message: String):
             message_emitted.emit(component_name, "%s cheered %d for teams: %s" % [sender_data['user'], contains['cheer_count'], contains['team_names']])
         else:
             message_emitted.emit(component_name, "%s cheered %d but no team provided." % [sender_data['user'], contains['cheer_count']])
+    add_cheer_to_teams(contains)
 
 func parse_chat_message(sender_data: SenderData, message: String) -> Dictionary:
     var components = Dictionary()
@@ -154,6 +155,11 @@ func parse_chat_message(sender_data: SenderData, message: String) -> Dictionary:
 
     components['team_names'] = []
     for t in teams:
-        components['team_names'].append(t.get_string())
+        components['team_names'].append(t.get_string().to_lower())
 
     return components
+
+func add_cheer_to_teams(contents: Dictionary):
+    for panel in $TabContainer.get_children():
+        if not (panel is TextEdit):
+            panel.add_cheer_to_teams(contents)

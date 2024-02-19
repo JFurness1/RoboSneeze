@@ -585,7 +585,7 @@ func data_received(data : PackedByteArray) -> void:
             for tag in msg[0].split(";"):
                 var pair = tag.split("=")
                 tags[pair[0]] = pair[1]
-        if (OS.is_debug_build()):
+        if (OS.is_debug_build() and false):
             print("> " + message)
         handle_message(message, tags)
 
