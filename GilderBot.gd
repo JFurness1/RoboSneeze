@@ -144,6 +144,7 @@ func parse_chat_message(sender_data: SenderData, message: String) -> Dictionary:
     var components = Dictionary()
     var cheers = cheer_regex.search_all(message)
 
+    components['user'] = sender_data['user']
     components['has_cheers'] = len(cheers) > 0
 
     components['cheer_count'] = 0

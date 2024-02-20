@@ -50,8 +50,12 @@ func add_new_team_from_data(data: Dictionary):
 
 func add_cheer_to_teams(contents: Dictionary):
     for team in %TeamList.get_children():
-        if team.team_tag in contents['team_names']:
-            team.add_points(contents['cheer_count'])
+        var tag = "#%s" % team.team_tag
+        if tag in contents['team_names']:
+            message_emitted.emit(self.name, "Added %d points to %s from %s's cheer." % [
+                contents['cheer_count'], tag, contents['user']
+            ])
+            team.add_points(contents['cheer_count'], contents['user'])
 
 func _on_add_team_button_pressed():
     # These should be valid as if they were invalid the add button would be disabled.
