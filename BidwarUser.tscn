@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxm06hdb74qry"]
+
+[ext_resource type="Script" path="res://BidwarUser.gd" id="1_ji63i"]
+
+[node name="Control" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+size_flags_vertical = 0
+script = ExtResource("1_ji63i")
+
+[node name="UsernameLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Username"
+vertical_alignment = 1
+
+[node name="DeleteButton" type="Button" parent="."]
+layout_mode = 2
+text = "X"
+
+[node name="VSeparator2" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="CurrentPointsLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Current Points:"
+
+[node name="CurrentPoints" type="SpinBox" parent="."]
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Change Points:"
+
+[node name="ModifyPoints" type="SpinBox" parent="."]
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+
+[node name="AddButton" type="Button" parent="."]
+layout_mode = 2
+text = "Add"
+
+[connection signal="pressed" from="AddButton" to="." method="_on_add_button_pressed"]

@@ -1,11 +1,16 @@
-extends HBoxContainer
+extends VBoxContainer
+
+const BidwarUser = preload("res://BidwarUser.tscn")
 
 var team_name: String = "PLACEHOLDER_NAME"
 var team_tag: String = "PLACEHOLDER_TAG"
+var user_group: String = "PLACEHOLDER_TAG_users"
 var points: int = 0
 var image_path: String = ""
 
-var user_contributions = Dictionary()
+const MATCH_COLOR = Color.FOREST_GREEN
+
+var unassigned_user: Node
 
 signal name_changed(old_name: String, new_name: String)
 signal tag_changed(old_tag: String, new_tag: String)
@@ -14,8 +19,9 @@ signal bidwar_team_removal_request(team_name: String, points: int)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass
-
+    $UserScroller.visible = false
+    self.unassigned_user = self.add_user("Unassigned", 0, false)
+    self.unassigned_user.set_disabled()
 
 func _on_delete_button_pressed():
     bidwar_team_removal_request.emit(self.name, self.points)
@@ -30,26 +36,78 @@ func set_details(name: String, tag: String, points: int):
 func set_points(new_points: int):
     var old_points = self.points
     self.points = new_points
-    $CurrentPoints.value = self.points
+    $Details/CurrentPoints.value = self.points
     if new_points != old_points:
         points_changed.emit(self.team_name, old_points, new_points)
+    if unassigned_user:
+        update_unassigned()
+        sort_users()
+
+
+func update_unassigned():
+    # count points from users
+    var user_points = self.count_user_points()
+    var unassigned = self.points - user_points
+    if unassigned_user:
+        unassigned_user.set_points(unassigned)
+
+
+func count_user_points() -> int:
+    var total = 0
+    var tree = get_tree()
+    if tree:
+        for node in tree.get_nodes_in_group(self.user_group):
+            total += node.points
+    return total
 
 
 func add_points(points: int, user: String = ""):
-    set_points(self.points + points)
     if len(user) > 0:
-        if self.user_contributions.has(user):
-            self.user_contributions[user] += points
+        var node = get_user_by_name(user)
+        if node:
+            node.add_points(points)
         else:
-            self.user_contributions[user] = points
-    for u in self.user_contributions:
-        print("User: %s has contributed %d to this team." % [u, self.user_contributions[u]])
+            add_user(user, points)
+    set_points(self.points + points)
+
+
+func _on_user_add_points_requested(points: int, user: String):
+    add_points(points, user)
+
+
+func add_user(username: String, points: int, add_to_group: bool = true) -> Node:
+    var new_user = BidwarUser.instantiate()
+    new_user.init(username, points)
+    $UserScroller/UserContainer.add_child(new_user)
+    new_user.add_points_requested.connect(_on_user_add_points_requested)
+    if add_to_group:
+        new_user.add_to_group(self.user_group)
+        self.sort_users()
+    return new_user
+
+
+func get_user_by_name(username: String) -> Node:
+    for node in get_tree().get_nodes_in_group(self.user_group):
+        if node.username == username:
+            return node
+    return null
+
+
+func sort_users():
+    var sorted_users := get_tree().get_nodes_in_group(self.user_group)
+    sorted_users.sort_custom(func(a: Node, b: Node): return a.username < b.username)
+
+    for node in sorted_users:
+        $UserScroller/UserContainer.remove_child(node)
+
+    for node in sorted_users:
+        $UserScroller/UserContainer.add_child(node)
 
 
 func set_team_name(new_name: String):
     var old_name = self.team_name
     self.team_name = new_name
-    $TeamNameInput.text = new_name
+    $Details/TeamNameInput.text = new_name
     if old_name != new_name:
         name_changed.emit(old_name, new_name)
 
@@ -58,7 +116,8 @@ func set_team_tag(new_tag: String):
     var old_tag = self.team_tag
     new_tag = sanitize_team_tag(new_tag)
     self.team_tag = new_tag
-    $TeamTagInput.text = new_tag
+    $Details/TeamTagInput.text = new_tag
+    self.user_group = "%s_users" % new_tag
     if old_tag != new_tag:
         tag_changed.emit(old_tag, new_tag)
 
@@ -71,32 +130,41 @@ func sanitize_team_tag(tag: String):
 
 
 func _on_team_tag_input_text_focus_exit():
-    set_team_tag($TeamTagInput.text)
+    set_team_tag($Details/TeamTagInput.text)
 
 
 func _on_change_button_pressed():
-    var change = $ChangePoints.value
-    self.set_points(points + change)
+    var change = $Details/ChangePoints.value
+    set_points(points + change)
+    var username = $Details/UserInput.text
 
+    # If we have a username then assign to user, otherwise it goes in unassigned
+    if username:
+        var node = get_user_by_name(username)
+        if node:
+            node.add_points(change)
+        else:
+            add_user(username, change)
+    update_unassigned()
 
 func _on_current_points_value_changed(value):
-    self.set_points(value)
+    set_points(value)
 
 
 func _on_team_name_input_text_submitted(new_text):
-    self.set_team_name(new_text)
+    set_team_name(new_text)
 
 
 func _on_team_tag_input_text_submitted(new_text):
-    self.set_team_tag(new_text)
+    set_team_tag(new_text)
 
 
 func _on_set_image_button_pressed():
-    $ImageSelectDialog.visible = true
+    $Details/ImageSelectDialog.visible = true
 
 
 func _on_image_select_dialog_close_requested():
-    $ImageSelectDialog.visible = false
+    $Details/ImageSelectDialog.visible = false
 
 
 func _on_image_select_dialog_file_selected(path):
@@ -105,7 +173,7 @@ func _on_image_select_dialog_file_selected(path):
     else:
         var new_image = Image.load_from_file(path)
         var texture = ImageTexture.create_from_image(new_image)
-        $TextureRect.texture = texture
+        $Details/TeamImage.texture = texture
         self.image_path = path
 
 
@@ -125,3 +193,20 @@ func set_from_data(data: Dictionary):
     self.set_points(int(data['points']))
     if data['image']:
         self._on_image_select_dialog_file_selected(data['image'])
+
+
+func _on_contributors_button_pressed():
+    $UserScroller.visible = !$UserScroller.visible
+
+
+func _on_user_input_text_changed(new_text: String):
+    if new_text == "Unassigned":
+        $Details/ChangeButton.disabled = true
+    else:
+        $Details/ChangeButton.disabled = false
+
+    for node in get_tree().get_nodes_in_group(self.user_group):
+        if node.username == new_text:
+            $Details/UserInput.add_theme_color_override("font_color", MATCH_COLOR)
+            return
+    $Details/UserInput.remove_theme_color_override("font_color")
