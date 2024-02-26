@@ -4,6 +4,7 @@ var username: String = "PLACEHOLDER"
 var points: int = 0
 
 signal add_points_requested(points: int, username: String)
+signal removal_requested(name: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,3 +44,7 @@ func set_disabled():
 func _on_add_button_pressed():
     var points = $ModifyPoints.value
     add_points_requested.emit(points, username)
+
+
+func _on_delete_button_pressed():
+    removal_requested.emit(self.username)

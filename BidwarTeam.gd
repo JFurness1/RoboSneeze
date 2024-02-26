@@ -23,6 +23,7 @@ func _ready():
     self.unassigned_user = self.add_user("Unassigned", 0, false)
     self.unassigned_user.set_disabled()
 
+
 func _on_delete_button_pressed():
     bidwar_team_removal_request.emit(self.name, self.points)
 
@@ -80,10 +81,21 @@ func add_user(username: String, points: int, add_to_group: bool = true) -> Node:
     new_user.init(username, points)
     $UserScroller/UserContainer.add_child(new_user)
     new_user.add_points_requested.connect(_on_user_add_points_requested)
+    new_user.removal_requested.connect(remove_user)
     if add_to_group:
         new_user.add_to_group(self.user_group)
         self.sort_users()
     return new_user
+
+
+func remove_user(username: String):
+    var node = get_user_by_name(username)
+    if node:
+        $UserScroller/UserContainer.remove_child(node)
+        node.remove_from_group(user_group)
+        add_points(-node.points)
+    else:
+        printerr("Tried to remove user '%s' from team '%s' and failed to find it." % [username, team_name])
 
 
 func get_user_by_name(username: String) -> Node:
@@ -147,6 +159,7 @@ func _on_change_button_pressed():
             add_user(username, change)
     update_unassigned()
 
+
 func _on_current_points_value_changed(value):
     set_points(value)
 
@@ -178,11 +191,16 @@ func _on_image_select_dialog_file_selected(path):
 
 
 func get_data() -> Dictionary:
+    var user_dict = Dictionary()
+    for node in get_tree().get_nodes_in_group(user_group):
+        user_dict[node.username] = node.points
+
     return {
         "name": self.team_name,
         "tag": self.team_tag,
         "points": self.points,
-        "image": self.image_path
+        "image": self.image_path,
+        "users": user_dict
     }
 
 
@@ -193,6 +211,9 @@ func set_from_data(data: Dictionary):
     self.set_points(int(data['points']))
     if data['image']:
         self._on_image_select_dialog_file_selected(data['image'])
+
+    for username in data['users']:
+        add_user(username, data['users'][username])
 
 
 func _on_contributors_button_pressed():
