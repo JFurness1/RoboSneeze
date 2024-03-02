@@ -106,14 +106,16 @@ func get_user_by_name(username: String) -> Node:
 
 
 func sort_users():
-    var sorted_users := get_tree().get_nodes_in_group(self.user_group)
-    sorted_users.sort_custom(func(a: Node, b: Node): return a.username < b.username)
+    var tree = get_tree()
+    if tree:
+        var sorted_users = tree.get_nodes_in_group(self.user_group)
+        sorted_users.sort_custom(func(a: Node, b: Node): return a.username < b.username)
 
-    for node in sorted_users:
-        $UserScroller/UserContainer.remove_child(node)
+        for node in sorted_users:
+            $UserScroller/UserContainer.remove_child(node)
 
-    for node in sorted_users:
-        $UserScroller/UserContainer.add_child(node)
+        for node in sorted_users:
+            $UserScroller/UserContainer.add_child(node)
 
 
 func set_team_name(new_name: String):

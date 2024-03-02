@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cfvttc8jficq7"]
+[gd_scene load_steps=6 format=3 uid="uid://cfvttc8jficq7"]
 
 [ext_resource type="Script" path="res://GilderBot.gd" id="1_aqfe4"]
 [ext_resource type="Script" path="res://LogBox.gd" id="2_2x7bs"]
 [ext_resource type="Script" path="res://ChatLogBox.gd" id="3_ldjjr"]
 [ext_resource type="Script" path="res://Gift.gd" id="4_e0hx0"]
+[ext_resource type="Script" path="res://ChatTTSControls.gd" id="4_u018f"]
 
 [node name="Control" type="VBoxContainer"]
 anchors_preset = 15
@@ -93,23 +94,126 @@ layout_mode = 2
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
+current_tab = 1
 
 [node name="LogBox" type="TextEdit" parent="TabContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 editable = false
 script = ExtResource("2_2x7bs")
 
-[node name="ChatLogBox" type="TextEdit" parent="TabContainer"]
-visible = false
+[node name="ChatContainer" type="VBoxContainer" parent="TabContainer"]
 layout_mode = 2
+
+[node name="ChatTTSControls" type="HBoxContainer" parent="TabContainer/ChatContainer"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("4_u018f")
+
+[node name="VoiceList" type="OptionButton" parent="TabContainer/ChatContainer/ChatTTSControls"]
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Voices found for the system TTS."
+
+[node name="VSeparator2" type="VSeparator" parent="TabContainer/ChatContainer/ChatTTSControls"]
+layout_mode = 2
+
+[node name="TTSSliders" type="VBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls"]
+layout_mode = 2
+
+[node name="SpeedContainer" type="HBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed:"
+
+[node name="WordRateSlider" type="HSlider" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 1.0
+exp_edit = true
+
+[node name="CurrentSpeedLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "N/A"
+horizontal_alignment = 1
+
+[node name="VolumeContainer" type="HBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders"]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Volume:"
+
+[node name="VolumeSlider" type="HSlider" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 80.0
+rounded = true
+
+[node name="CurrentVolumeLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "N/A"
+horizontal_alignment = 1
+
+[node name="PitchContainer" type="HBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders"]
+layout_mode = 2
+
+[node name="PitchLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pitch:"
+
+[node name="PitchSlider" type="HSlider" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 2.0
+step = 0.1
+value = 1.0
+
+[node name="CurrentPitchLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "N/A"
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="TabContainer/ChatContainer/ChatTTSControls"]
+layout_mode = 2
+
+[node name="TTSStartStop" type="Button" parent="TabContainer/ChatContainer/ChatTTSControls"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Start"
+
+[node name="HSeparator" type="HSeparator" parent="TabContainer/ChatContainer"]
+layout_mode = 2
+
+[node name="ChatLogBox" type="TextEdit" parent="TabContainer/ChatContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 editable = false
 script = ExtResource("3_ldjjr")
 
 [connection signal="message_emitted" from="." to="TabContainer/LogBox" method="_on_message_emitted"]
 [connection signal="chat_message" from="Gift" to="." method="_on_gift_chat_message"]
-[connection signal="chat_message" from="Gift" to="TabContainer/ChatLogBox" method="_on_gift_chat_message"]
+[connection signal="chat_message" from="Gift" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_gift_chat_message"]
+[connection signal="chat_message" from="Gift" to="TabContainer/ChatContainer/ChatLogBox" method="_on_gift_chat_message"]
 [connection signal="events_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_connected"]
 [connection signal="events_disconnected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_disconnected"]
 [connection signal="message_emitted" from="Gift" to="TabContainer/LogBox" method="_on_gift_message_emitted"]
@@ -124,3 +228,7 @@ script = ExtResource("3_ldjjr")
 [connection signal="text_submitted" from="NewEventHBox/NewEventName" to="." method="_on_new_event_name_text_submitted"]
 [connection signal="pressed" from="NewEventHBox/AddNewEventButton" to="." method="_on_add_new_event_button_pressed"]
 [connection signal="pressed" from="NewEventHBox/LoadEventButton" to="." method="_on_load_event_button_pressed"]
+[connection signal="value_changed" from="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer/WordRateSlider" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_word_rate_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer/VolumeSlider" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_volume_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer/PitchSlider" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_pitch_slider_value_changed"]
+[connection signal="pressed" from="TabContainer/ChatContainer/ChatTTSControls/TTSStartStop" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_tts_start_stop_pressed"]

@@ -14,6 +14,8 @@ func _process(delta):
 func add_message(sender: String, message: String):
     var time = Time.get_datetime_string_from_system().split("T")[1]
     self.text += "%s [%s] %s\n" % [time, sender, message]
+    var cl = get_line_count()
+    set_caret_line(cl)
 
 func _on_message_emitted(sender: String, content: String):
     self.add_message(sender, content)

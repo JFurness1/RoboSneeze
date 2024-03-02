@@ -5,6 +5,7 @@ var points: int = 0
 
 signal add_points_requested(points: int, username: String)
 signal removal_requested(name: String)
+signal points_changed(new_points: int, username: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,6 +31,7 @@ func set_points(points: int):
     self.points = points
     $CurrentPoints.value = points
     $ModifyPoints.value = 0
+    points_changed.emit(points, username)
 
 func add_points(points: int):
     set_points(self.points + points)

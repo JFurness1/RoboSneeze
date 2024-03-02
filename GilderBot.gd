@@ -3,6 +3,7 @@ extends VBoxContainer
 const component_name = "ROOT"
 const Bidwar = preload("res://Bidwar.tscn")
 
+const bidwar_group = "bidwars"
 
 const FILE_DIALOG_MIN_SIZE = Vector2i(400, 400)
 
@@ -19,6 +20,8 @@ func _ready():
     cheer_regex.compile("\\s*Cheer\\d\\d*")
     cheer_count_regex.compile("\\d*$")
     cheer_team_regex.compile("#\\w*")
+    #$TabContainer/ChatContainer/ChatLogBox.scroll_vertical = INF
+    #%LogBox.scroll_vertical = INF
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -33,10 +36,12 @@ func validate_name_and_set_button(new_text: String) -> bool:
     if new_text:
         var new_path = Globals.make_filename(new_text)
         box_disabled = false
-        for panel in $TabContainer.get_children():
-            if not (panel is TextEdit) and panel.file_name == new_path:
-                box_disabled = true
-                break
+        var tree = get_tree()
+        if tree:
+            for panel in tree.get_nodes_in_group(bidwar_group):
+                if panel.file_name == new_path:
+                    box_disabled = true
+                    break
         if FileAccess.file_exists(new_path):
             box_disabled = true
     else:
@@ -86,10 +91,9 @@ func _on_load_event_button_pressed():
     self.event_load_file_dialogue = file_dialog
 
 func event_path_is_valid(path: String) -> bool:
-    for panel in $TabContainer.get_children():
-        if panel is TextEdit:
-            continue
-        else:
+    var tree = get_tree()
+    if tree:
+        for panel in tree.get_nodes_in_group(bidwar_group):
             if panel.file_name == path:
                 return false
     return true
@@ -111,6 +115,7 @@ func _on_load_event_file_selected(path: String):
 
 func add_panel(new_panel):
     $TabContainer.add_child(new_panel)
+    new_panel.add_to_group(bidwar_group)
     new_panel.message_emitted.connect(%LogBox._on_message_emitted)
     new_panel.remove_requested.connect(self.remove_panel)
     message_emitted.emit(
@@ -119,6 +124,7 @@ func add_panel(new_panel):
 
 func remove_panel(panel):
     $TabContainer.remove_child(panel)
+    panel.remove_from_group(bidwar_group)
     message_emitted.emit(
         component_name,
         "Removed panel: '%s'." % [panel.name])
@@ -161,6 +167,7 @@ func parse_chat_message(sender_data: SenderData, message: String) -> Dictionary:
     return components
 
 func add_cheer_to_teams(contents: Dictionary):
-    for panel in $TabContainer.get_children():
-        if not (panel is TextEdit):
+    var tree = get_tree()
+    if tree:
+        for panel in tree.get_nodes_in_group(bidwar_group):
             panel.add_cheer_to_teams(contents)
