@@ -16,7 +16,7 @@ signal message_emitted(sender: String, message: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    $Gift.message_emitted.connect(%LogBox._on_message_emitted)
+    $Gift.message_emitted.connect(%Log._on_message_emitted)
     cheer_regex.compile("\\s*Cheer\\d\\d*")
     cheer_count_regex.compile("\\d*$")
     cheer_team_regex.compile("#\\w*")
@@ -116,7 +116,7 @@ func _on_load_event_file_selected(path: String):
 func add_panel(new_panel):
     $TabContainer.add_child(new_panel)
     new_panel.add_to_group(bidwar_group)
-    new_panel.message_emitted.connect(%LogBox._on_message_emitted)
+    new_panel.message_emitted.connect(%Log._on_message_emitted)
     new_panel.remove_requested.connect(self.remove_panel)
     message_emitted.emit(
         component_name,

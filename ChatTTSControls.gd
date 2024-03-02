@@ -23,6 +23,7 @@ func _on_tts_start_stop_pressed():
     if read_chat:
         read_chat = false
         $TTSStartStop.text = "Start"
+        DisplayServer.tts_stop()
     else:
         read_chat = true
         $TTSStartStop.text = "Pls Stop"
@@ -32,13 +33,14 @@ func _on_gift_chat_message(sender_data, message):
     if not read_chat:
         return
 
+    # Consider this for TTS https://github.com/DougDougGithub/ChatGodApp/blob/main/azure_text_to_speech.py
+
     DisplayServer.tts_stop()
     var voice_is = voices[$VoiceList.selected]
     var rate = $TTSSliders/SpeedContainer/WordRateSlider.value
     var volume = $TTSSliders/VolumeContainer/VolumeSlider.value
     var pitch = $TTSSliders/PitchContainer/PitchSlider.value
     DisplayServer.tts_speak(message, voice_is, volume, pitch, rate)
-
 
 func _on_volume_slider_value_changed(value):
     $TTSSliders/VolumeContainer/CurrentVolumeLabel.text = "%.1f" % $TTSSliders/VolumeContainer/VolumeSlider.value

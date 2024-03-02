@@ -96,7 +96,7 @@ layout_mode = 2
 size_flags_vertical = 3
 current_tab = 1
 
-[node name="LogBox" type="TextEdit" parent="TabContainer"]
+[node name="Log" type="TextEdit" parent="TabContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -104,36 +104,36 @@ size_flags_vertical = 3
 editable = false
 script = ExtResource("2_2x7bs")
 
-[node name="ChatContainer" type="VBoxContainer" parent="TabContainer"]
+[node name="Chat" type="VBoxContainer" parent="TabContainer"]
 layout_mode = 2
 
-[node name="ChatTTSControls" type="HBoxContainer" parent="TabContainer/ChatContainer"]
+[node name="ChatTTSControls" type="HBoxContainer" parent="TabContainer/Chat"]
 layout_mode = 2
 alignment = 1
 script = ExtResource("4_u018f")
 
-[node name="VoiceList" type="OptionButton" parent="TabContainer/ChatContainer/ChatTTSControls"]
+[node name="VoiceList" type="OptionButton" parent="TabContainer/Chat/ChatTTSControls"]
 custom_minimum_size = Vector2(225, 0)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Voices found for the system TTS."
 
-[node name="VSeparator2" type="VSeparator" parent="TabContainer/ChatContainer/ChatTTSControls"]
+[node name="VSeparator2" type="VSeparator" parent="TabContainer/Chat/ChatTTSControls"]
 layout_mode = 2
 
-[node name="TTSSliders" type="VBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls"]
+[node name="TTSSliders" type="VBoxContainer" parent="TabContainer/Chat/ChatTTSControls"]
 layout_mode = 2
 
-[node name="SpeedContainer" type="HBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders"]
+[node name="SpeedContainer" type="HBoxContainer" parent="TabContainer/Chat/ChatTTSControls/TTSSliders"]
 layout_mode = 2
 alignment = 1
 
-[node name="SpeedLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer"]
+[node name="SpeedLabel" type="Label" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/SpeedContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Speed:"
 
-[node name="WordRateSlider" type="HSlider" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer"]
+[node name="WordRateSlider" type="HSlider" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/SpeedContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -143,42 +143,42 @@ step = 0.1
 value = 1.0
 exp_edit = true
 
-[node name="CurrentSpeedLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer"]
+[node name="CurrentSpeedLabel" type="Label" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/SpeedContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "N/A"
 horizontal_alignment = 1
 
-[node name="VolumeContainer" type="HBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders"]
+[node name="VolumeContainer" type="HBoxContainer" parent="TabContainer/Chat/ChatTTSControls/TTSSliders"]
 layout_mode = 2
 
-[node name="VolumeLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer"]
+[node name="VolumeLabel" type="Label" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/VolumeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Volume:"
 
-[node name="VolumeSlider" type="HSlider" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer"]
+[node name="VolumeSlider" type="HSlider" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/VolumeContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 4
 value = 80.0
 rounded = true
 
-[node name="CurrentVolumeLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer"]
+[node name="CurrentVolumeLabel" type="Label" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/VolumeContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "N/A"
 horizontal_alignment = 1
 
-[node name="PitchContainer" type="HBoxContainer" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders"]
+[node name="PitchContainer" type="HBoxContainer" parent="TabContainer/Chat/ChatTTSControls/TTSSliders"]
 layout_mode = 2
 
-[node name="PitchLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer"]
+[node name="PitchLabel" type="Label" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/PitchContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Pitch:"
 
-[node name="PitchSlider" type="HSlider" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer"]
+[node name="PitchSlider" type="HSlider" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/PitchContainer"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -186,49 +186,49 @@ max_value = 2.0
 step = 0.1
 value = 1.0
 
-[node name="CurrentPitchLabel" type="Label" parent="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer"]
+[node name="CurrentPitchLabel" type="Label" parent="TabContainer/Chat/ChatTTSControls/TTSSliders/PitchContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 text = "N/A"
 horizontal_alignment = 1
 
-[node name="VSeparator" type="VSeparator" parent="TabContainer/ChatContainer/ChatTTSControls"]
+[node name="VSeparator" type="VSeparator" parent="TabContainer/Chat/ChatTTSControls"]
 layout_mode = 2
 
-[node name="TTSStartStop" type="Button" parent="TabContainer/ChatContainer/ChatTTSControls"]
+[node name="TTSStartStop" type="Button" parent="TabContainer/Chat/ChatTTSControls"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 size_flags_vertical = 4
 text = "Start"
 
-[node name="HSeparator" type="HSeparator" parent="TabContainer/ChatContainer"]
+[node name="HSeparator" type="HSeparator" parent="TabContainer/Chat"]
 layout_mode = 2
 
-[node name="ChatLogBox" type="TextEdit" parent="TabContainer/ChatContainer"]
+[node name="ChatLog" type="TextEdit" parent="TabContainer/Chat"]
 layout_mode = 2
 size_flags_vertical = 3
 editable = false
 script = ExtResource("3_ldjjr")
 
-[connection signal="message_emitted" from="." to="TabContainer/LogBox" method="_on_message_emitted"]
+[connection signal="message_emitted" from="." to="TabContainer/Log" method="_on_message_emitted"]
 [connection signal="chat_message" from="Gift" to="." method="_on_gift_chat_message"]
-[connection signal="chat_message" from="Gift" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_gift_chat_message"]
-[connection signal="chat_message" from="Gift" to="TabContainer/ChatContainer/ChatLogBox" method="_on_gift_chat_message"]
-[connection signal="events_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_connected"]
-[connection signal="events_disconnected" from="Gift" to="TabContainer/LogBox" method="_on_gift_events_disconnected"]
-[connection signal="message_emitted" from="Gift" to="TabContainer/LogBox" method="_on_gift_message_emitted"]
+[connection signal="chat_message" from="Gift" to="TabContainer/Chat/ChatTTSControls" method="_on_gift_chat_message"]
+[connection signal="chat_message" from="Gift" to="TabContainer/Chat/ChatLog" method="_on_gift_chat_message"]
+[connection signal="events_connected" from="Gift" to="TabContainer/Log" method="_on_gift_events_connected"]
+[connection signal="events_disconnected" from="Gift" to="TabContainer/Log" method="_on_gift_events_disconnected"]
+[connection signal="message_emitted" from="Gift" to="TabContainer/Log" method="_on_gift_message_emitted"]
 [connection signal="twitch_connected" from="Gift" to="." method="_on_gift_twitch_connected"]
-[connection signal="twitch_connected" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_connected"]
+[connection signal="twitch_connected" from="Gift" to="TabContainer/Log" method="_on_gift_twitch_connected"]
 [connection signal="twitch_disconnected" from="Gift" to="." method="_on_gift_twitch_disconnected"]
-[connection signal="twitch_disconnected" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_disconnected"]
-[connection signal="twitch_unavailable" from="Gift" to="TabContainer/LogBox" method="_on_gift_twitch_unavailable"]
-[connection signal="user_token_invalid" from="Gift" to="TabContainer/LogBox" method="_on_gift_user_token_invalid"]
+[connection signal="twitch_disconnected" from="Gift" to="TabContainer/Log" method="_on_gift_twitch_disconnected"]
+[connection signal="twitch_unavailable" from="Gift" to="TabContainer/Log" method="_on_gift_twitch_unavailable"]
+[connection signal="user_token_invalid" from="Gift" to="TabContainer/Log" method="_on_gift_user_token_invalid"]
 [connection signal="pressed" from="ConnectButton" to="Gift" method="_on_connect_button_pressed"]
 [connection signal="text_changed" from="NewEventHBox/NewEventName" to="." method="_on_new_event_name_text_changed"]
 [connection signal="text_submitted" from="NewEventHBox/NewEventName" to="." method="_on_new_event_name_text_submitted"]
 [connection signal="pressed" from="NewEventHBox/AddNewEventButton" to="." method="_on_add_new_event_button_pressed"]
 [connection signal="pressed" from="NewEventHBox/LoadEventButton" to="." method="_on_load_event_button_pressed"]
-[connection signal="value_changed" from="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/SpeedContainer/WordRateSlider" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_word_rate_slider_value_changed"]
-[connection signal="value_changed" from="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/VolumeContainer/VolumeSlider" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_volume_slider_value_changed"]
-[connection signal="value_changed" from="TabContainer/ChatContainer/ChatTTSControls/TTSSliders/PitchContainer/PitchSlider" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_pitch_slider_value_changed"]
-[connection signal="pressed" from="TabContainer/ChatContainer/ChatTTSControls/TTSStartStop" to="TabContainer/ChatContainer/ChatTTSControls" method="_on_tts_start_stop_pressed"]
+[connection signal="value_changed" from="TabContainer/Chat/ChatTTSControls/TTSSliders/SpeedContainer/WordRateSlider" to="TabContainer/Chat/ChatTTSControls" method="_on_word_rate_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Chat/ChatTTSControls/TTSSliders/VolumeContainer/VolumeSlider" to="TabContainer/Chat/ChatTTSControls" method="_on_volume_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Chat/ChatTTSControls/TTSSliders/PitchContainer/PitchSlider" to="TabContainer/Chat/ChatTTSControls" method="_on_pitch_slider_value_changed"]
+[connection signal="pressed" from="TabContainer/Chat/ChatTTSControls/TTSStartStop" to="TabContainer/Chat/ChatTTSControls" method="_on_tts_start_stop_pressed"]
